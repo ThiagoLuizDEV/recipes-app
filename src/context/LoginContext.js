@@ -32,17 +32,23 @@ function LoginProvider({ children }) {
     history.push('/meals');
   };
 
-  const LoginContextMemo = useMemo(() => ({
-    validationLogin,
-    verificaEmail,
-    login,
-    handleChange,
-    handleClick,
-  }), [login]);
+  //   const LoginContextMemo = useMemo(() => ({
+  //     validationLogin,
+  //     verificaEmail,
+  //     login,
+  //     handleChange,
+  //     handleClick,
+  //   }), [handleChange, handleClick, validationLogin, verificaEmail]);
 
   return (
     <LoginContext.Provider
-      value={ LoginContextMemo }
+      value={ {
+        validationLogin,
+        verificaEmail,
+        login,
+        handleChange,
+        handleClick,
+      } }
     >
       { children }
     </LoginContext.Provider>
