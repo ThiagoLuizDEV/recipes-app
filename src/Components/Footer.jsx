@@ -21,13 +21,12 @@ export default function Footer() {
           render={ ({ history }) => (
             <button
               data-testid="meals-bottom-btn"
-              onClick={ () => { history.push('/refeições'); } }
+              onClick={ () => { history.push('/meals'); } }
             >
               <img src={ mealsIcon } alt="Meals Icon " />
             </button>
           ) }
         />
-        <h1 data-testid="page-title">Menu Inferior</h1>
 
       </div>
     </div>
