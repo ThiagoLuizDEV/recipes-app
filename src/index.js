@@ -5,15 +5,17 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import LoginProvider from './context/LoginContext';
+import FetchsApi from './context/FetchsApi';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <BrowserRouter>
-      <LoginProvider>
-        <App />
-      </LoginProvider>
-      ;
+      <FetchsApi>
+        <LoginProvider>
+          <App />
+        </LoginProvider>
+      </FetchsApi>
     </BrowserRouter>,
   );
 // If you want your app to work offline and load faster, you can change
