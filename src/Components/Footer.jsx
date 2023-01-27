@@ -5,8 +5,8 @@ import mealsIcon from '../images/mealIcon.svg';
 
 export default function Footer() {
   return (
-    <div data-testid="footer">
-      <div className="fixarRodape">
+    <div data-testid="footer" className="fixarRodape">
+      <div>
         <Link to="/drinks">
           <button
             src={ drinkIcon }
