@@ -4,13 +4,15 @@ import { FetchApiContext } from '../context/FetchsApi';
 
 export default function Drinks() {
   const { drinkRecipeFetch,
-    drinkRecipe } = useContext(FetchApiContext);
+    drinkRecipe, categoryDrink, drinkCategory } = useContext(FetchApiContext);
 
   useEffect(() => {
     drinkRecipeFetch();
+    drinkCategory();
   }, []);
 
   const numberValid = 11;
+  const secondNumberValid = 4;
   const arrayDrink = [];
   drinkRecipe.forEach((recips, i) => {
     if (i <= numberValid) {
@@ -18,11 +20,30 @@ export default function Drinks() {
     }
   });
 
-  console.log(arrayDrink);
-  console.log(drinkRecipe);
+  const filterDrinkUnique = [];
+  categoryDrink.forEach((cat, index) => {
+    if (index <= secondNumberValid) {
+      return filterDrinkUnique.push(cat.strCategory);
+    }
+    return true;
+  });
+
+  console.log(filterDrinkUnique);
+  console.log(categoryDrink);
+  // console.log(drinkRecipe);
   return (
     <div>
       <Header />
+      <table>
+        {filterDrinkUnique.map((filter) => (
+          <button
+            key={ filter }
+            data-testid={ `${filter}-category-filter` }
+          >
+            { filter }
+          </button>
+        ))}
+      </table>
       { arrayDrink.map((recips, index) => (
         <card
           data-testid={ `${index}-recipe-card` }
