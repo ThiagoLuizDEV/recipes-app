@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import perfilImage from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 
@@ -10,16 +10,15 @@ export default function Header() {
   const test = name[0].toUpperCase() + name.substring(1);
   return (
     <div>
-      <Route
-        render={ ({ history }) => (
-          <button
-            src={ perfilImage }
-            alt="Imagem Perfil "
-            data-testid="profile-top-btn"
-            onClick={ () => { history.push('/profile'); } }
-          />
-        ) }
-      />
+      <Link to="/profile">
+        <button
+          src={ perfilImage }
+          alt="Imagem Perfil "
+          data-testid="profile-top-btn"
+          // onClick={ () => { ('/profile'); } }
+        />
+      </Link>
+
       <h1 data-testid="page-title">{ test }</h1>
       {/* { console.log(test)} */}
       <button
