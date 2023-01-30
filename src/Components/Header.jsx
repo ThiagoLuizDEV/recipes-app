@@ -15,7 +15,6 @@ export default function Header() {
           src={ perfilImage }
           alt="Imagem Perfil "
           data-testid="profile-top-btn"
-          // onClick={ () => { ('/profile'); } }
         />
       </Link>
 
