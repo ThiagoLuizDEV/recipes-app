@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
@@ -32,23 +32,17 @@ function LoginProvider({ children }) {
     history.push('/meals');
   };
 
-  //   const LoginContextMemo = useMemo(() => ({
-  //     validationLogin,
-  //     verificaEmail,
-  //     login,
-  //     handleChange,
-  //     handleClick,
-  //   }), [handleChange, handleClick, validationLogin, verificaEmail]);
+  const LoginContextMemo = useMemo(() => ({
+    validationLogin,
+    verificaEmail,
+    login,
+    handleChange,
+    handleClick,
+  }), [handleChange, handleClick, validationLogin, verificaEmail]);
 
   return (
     <LoginContext.Provider
-      value={ {
-        validationLogin,
-        verificaEmail,
-        login,
-        handleChange,
-        handleClick,
-      } }
+      value={ LoginContextMemo }
     >
       { children }
     </LoginContext.Provider>
