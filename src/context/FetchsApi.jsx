@@ -33,7 +33,6 @@ function FetchsApi({ children }) {
     setCategoryDrink(data.drinks);
   };
 
-
   const FetchContextMemo = useMemo(() => ({
     mealsRecipeFetch,
     drinkRecipeFetch,

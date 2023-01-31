@@ -14,6 +14,7 @@ function Routes() {
       <Switch>
         <Route component={ Login } path="/" exact />
         <Route component={ Profile } path="/profile" />
+        <Route component={ Recipes } path="/recipes" />
         <Route component={ Meals } path="/meals" />
         <Route component={ Meals } path="/meals/:id-da-receita" />
         <Route component={ Recipes } path="/recipes" />
