@@ -38,6 +38,7 @@ function LoginProvider({ children }) {
     login,
     handleChange,
     handleClick,
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [handleChange, handleClick, validationLogin, verificaEmail]);
 
   return (
