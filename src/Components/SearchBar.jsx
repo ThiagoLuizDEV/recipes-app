@@ -29,17 +29,26 @@ export default function SearchBar() {
     e.preventDefault();
     const recipes = await fetchRecipes();
 
-    if (recipes.length <= 1) {
-      // `${pathname}/${recipes[0]}`
+    if (!recipes) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+
+    if (!!recipes && recipes.length <= 1) {
       history.push(`${pathname}/${recipes[0][checkPathName()]}`);
     }
   };
 
-  const handleChange = ({ target }) => {
+  const handleSearchChange = ({ target }) => {
     setSearch(target.value);
     if (radio === 'firstLetter' && search.length >= 1) {
       global.alert('Your search must have only 1 (one) character');
+      setSearch(target.value[0]);
     }
+  };
+
+  const handleRadioChange = ({ target }) => {
+    setSearch('');
+    setRadio(target.value);
   };
 
   return (
@@ -49,7 +58,7 @@ export default function SearchBar() {
         data-testid="search-input"
         placeholder="Search"
         value={ search }
-        onChange={ handleChange }
+        onChange={ handleSearchChange }
       />
       <label htmlFor="ingredient-search-radio">
         <input
@@ -57,9 +66,9 @@ export default function SearchBar() {
           id="ingredient-search-radio"
           data-testid="ingredient-search-radio"
           name="search-bar-radio"
-          value={ radio }
+          value="ingredient"
           checked={ radio === 'ingredient' }
-          onChange={ () => setRadio('ingredient') }
+          onChange={ (e) => handleRadioChange(e) }
         />
         Ingredient
       </label>
@@ -69,9 +78,9 @@ export default function SearchBar() {
           id="name-search-radio"
           data-testid="name-search-radio"
           name="search-bar-radio"
-          value={ radio }
+          value="name"
           checked={ radio === 'name' }
-          onChange={ () => setRadio('name') }
+          onChange={ (e) => handleRadioChange(e) }
         />
         Name
       </label>
@@ -81,9 +90,9 @@ export default function SearchBar() {
           id="first-letter-search-radio"
           data-testid="first-letter-search-radio"
           name="search-bar-radio"
-          value={ radio }
+          value="firstLetter"
           checked={ radio === 'firstLetter' }
-          onChange={ () => setRadio('firstLetter') }
+          onChange={ (e) => handleRadioChange(e) }
         />
         First letter
       </label>
