@@ -45,6 +45,7 @@ function FetchApiByCategory({ children }) {
     setEndPointMeals,
     setEndPointDrinks,
     endPointDrinks,
+    setButtonDrinks,
   }), [buttonMeals, endPointMeals, buttonDrinks, endPointDrinks]);
 
   return (

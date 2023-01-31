@@ -11,7 +11,7 @@ export default function Drinks() {
 
   const {
     buttonDrinks,
-    setEndPointDrinks } = useContext(FetchApiByCategoryContext);
+    setEndPointDrinks, setButtonDrinks } = useContext(FetchApiByCategoryContext);
 
   useEffect(() => {
     drinkRecipeFetch();
@@ -31,13 +31,10 @@ export default function Drinks() {
     }
   });
 
-  // const handleInitialPage = () => {
-  //   drinkRecipe.forEach((recips, i) => {
-  //     if (i <= numberValid) {
-  //       return arrayDrink.push(recips);
-  //     }
-  //   });
-  // };
+  const handleInitialPage = () => {
+    setButtonDrinks([]);
+    console.log(buttonDrinks);
+  };
 
   const filterDrinkUnique = [];
   categoryDrink.forEach((cat, index) => {
@@ -90,6 +87,8 @@ export default function Drinks() {
       <button
         className="buttonFilter"
         value="All"
+        data-testid="All-category-filter"
+        onClick={ handleInitialPage }
       >
         All
       </button>
@@ -102,6 +101,9 @@ export default function Drinks() {
           )
         }
       </div>
+      { console.log(arrayDrink, 'arraydrink')}
+      ;
+      {console.log(buttonDrinks)}
     </div>
   );
 }

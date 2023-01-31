@@ -14,7 +14,7 @@ export default function Meals() {
 
   const {
     buttonMeals,
-    setEndPointMeals } = useContext(FetchApiByCategoryContext);
+    setEndPointMeals, setButtonMeals } = useContext(FetchApiByCategoryContext);
 
   useEffect(() => {
     mealsRecipeFetch();
@@ -35,6 +35,15 @@ export default function Meals() {
       return arrayMeal.push(recips);
     }
   });
+
+  const handleInitialPage = () => {
+    // drinkRecipe.forEach((recips, i) => {
+    //   if (i <= numberValid) {
+    //     return arrayDrink.push(recips);
+    //   }
+    // });
+    setButtonMeals([]);
+  };
 
   const filterMealUnique = [];
 
@@ -83,6 +92,14 @@ export default function Meals() {
           </button>
         ))}
       </div>
+      <button
+        className="buttonFilter"
+        value="All"
+        data-testid="All-category-filter"
+        onClick={ handleInitialPage }
+      >
+        All
+      </button>
       <div className="imgMeals">
         {
           buttonMeals.length > 0 ? (
