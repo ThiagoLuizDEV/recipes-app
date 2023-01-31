@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
 import Header from '../Components/Header';
+import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
 import { FetchApiContext } from '../context/FetchsApi';
 import './Meals.css';
@@ -109,6 +110,7 @@ export default function Meals() {
           )
         }
       </div>
+      <Footer />
     </div>
   );
 }

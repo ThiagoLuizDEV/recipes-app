@@ -11,7 +11,8 @@ export default function Header() {
   return (
     <div>
       <Link to="/profile">
-        <button
+        <input
+          type="image"
           src={ perfilImage }
           alt="Imagem Perfil "
           data-testid="profile-top-btn"
@@ -20,7 +21,8 @@ export default function Header() {
 
       <h1 data-testid="page-title">{ test }</h1>
       {/* { console.log(test)} */}
-      <button
+      <input
+        type="image"
         data-testid="search-top-btn"
         src={ searchIcon }
         alt="Search "
