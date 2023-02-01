@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
@@ -20,8 +20,8 @@ export default function Profile() {
   //   }
   // }, []);
   const handleClear = () => {
-    $.each(localStorage, (key) => {
-      keys.push(key);
+    each(localStorage, (key) => {
+      key.push(key);
     });
     localStorage.clear(key);
   };
