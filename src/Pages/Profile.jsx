@@ -4,6 +4,7 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { LoginContext } from '../context/LoginContext';
 
+// hi
 export default function Profile() {
   const { login } = useContext(LoginContext);
   return (
