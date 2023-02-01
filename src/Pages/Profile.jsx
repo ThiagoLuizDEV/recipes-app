@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+// import { LoginContext } from '../context/LoginContext';
 
+// hi
 export default function Profile() {
-  const [name, setName] = useState([]);
-
-  useEffect(() => {
-    const names = JSON.parse(localStorage.getItem('email'));
-    if (names) {
-      setName(name);
-    }
-  }, []);
-  const handleClear = () => {
-    $.each(localStorage, (key) => {
-      keys.push(key);
-    });
-    localStorage.clear(key);
-  };
+  const email = localStorage.getItem('user');
+  console.log(email);
+  // const history = useHistory();
+  // const { login } = useContext(LoginContext);
+  // const emails = login.email;
+  // console.log(emails);
+  // const test = 'email@mail.com';
+  // for (let i = 0; i < localStorage.length; i += 1) {
+  //   const key = localStorage.key(i);
+  //   const value = localStorage.getItem(key);
+  //   console.log(key, value);
+  // }
   return (
     <div>
       <Header />
-      <h1 data-testid="profile-email">{name}</h1>
-      <Link to='"/done-recipes" /'>
+      <h1 data-testid="profile-email">{email}</h1>
+      <Link to="/done-recipes">
         <button
           type="submit"
           data-testid="profile-done-btn"
         >
-          DoneRecipes
+          Done Recipes
         </button>
       </Link>
-      <Link to="/favorites-recipes">
+      <Link to="/favorite-recipes">
         <button
           type="submit"
           data-testid="profile-favorite-btn"
@@ -40,9 +40,9 @@ export default function Profile() {
       </Link>
       <Link to="/">
         <button
-          type="submit"
+          type="button"
           data-testid="profile-logout-btn"
-          onClick={ () => handleClear() }
+          onClick={ localStorage.removeItem('user') }
         >
           Logout
         </button>
