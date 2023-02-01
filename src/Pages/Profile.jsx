@@ -6,25 +6,6 @@ import { LoginContext } from '../context/LoginContext';
 
 export default function Profile() {
   const { login } = useContext(LoginContext);
-  // const getEmail = () => (localStorage.getItem('email')
-  //   ? JSON.parse(localStorage.getItem('email')) : []);
-  // console.log(getEmail());
-  // const [name, setName] = useState([]);
-  // const nameEmail = (() => {
-  //   localStorage.getItem('email');
-  // });
-  // useEffect(() => {
-  //   const names = JSON.parse(localStorage.getItem('email'));
-  //   if (names) {
-  //     setName(name);
-  //   }
-  // }, []);
-  const handleClear = () => {
-    each(localStorage, (key) => {
-      key.push(key);
-    });
-    localStorage.clear(key);
-  };
   return (
     <div>
       <Header />
@@ -40,7 +21,7 @@ export default function Profile() {
       <Link to="/favorite-recipes">
         <button
           type="submit"
-          data-testid="profile-favorite-btn"
+          data-testid="profile-favorite-btn"s
         >
           Favorite Recipes
         </button>
@@ -49,7 +30,7 @@ export default function Profile() {
         <button
           type="submit"
           data-testid="profile-logout-btn"
-          onClick={ () => handleClear() }
+          onClick={ localStorage.clear(login) }
         >
           Logout
         </button>
