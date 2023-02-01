@@ -1,4 +1,4 @@
-import React, { useMemo, createContext } from 'react';
+import React, { useMemo, createContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { oneOfType, arrayOf, node } from 'prop-types';
 import useSearch from '../hooks/useSearch';
@@ -14,6 +14,8 @@ export default function SearchRecipesProvider({ children }) {
   } = useSearch();
 
   const { pathname } = useLocation();
+
+  const [searchArray, setSearchArray] = useState([]);
 
   const checkPath = () => {
     if (pathname === '/meals') {
@@ -56,7 +58,9 @@ export default function SearchRecipesProvider({ children }) {
     radio,
     setRadio,
     setSearch,
-  }), [search, radio]);
+    setSearchArray,
+    searchArray,
+  }), [search, radio, searchArray]);
 
   return (
     <SearchRecipesContext.Provider value={ memo }>

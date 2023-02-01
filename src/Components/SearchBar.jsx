@@ -9,6 +9,7 @@ export default function SearchBar() {
     radio,
     setRadio,
     fetchRecipes,
+    setSearchArray,
   } = useContext(SearchRecipesContext);
 
   const history = useHistory();
@@ -31,11 +32,15 @@ export default function SearchBar() {
 
     if (!recipes) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      return;
     }
 
     if (!!recipes && recipes.length <= 1) {
       history.push(`${pathname}/${recipes[0][checkPathName()]}`);
+      return;
     }
+
+    setSearchArray(recipes);
   };
 
   const handleSearchChange = ({ target }) => {
