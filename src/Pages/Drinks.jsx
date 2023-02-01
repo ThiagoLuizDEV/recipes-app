@@ -4,9 +4,14 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
 import { FetchApiContext } from '../context/FetchsApi';
+import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import './Meals.css';
 
 export default function Drinks() {
+  const {
+    searchArray,
+  } = useContext(SearchRecipesContext);
+
   const { drinkRecipeFetch,
     drinkRecipe, categoryDrink, drinkCategory } = useContext(FetchApiContext);
 
@@ -25,12 +30,22 @@ export default function Drinks() {
 
   const numberValid = 11;
   const secondNumberValid = 4;
+
   const arrayDrink = [];
-  drinkRecipe.forEach((recips, i) => {
-    if (i <= numberValid) {
-      return arrayDrink.push(recips);
-    }
-  });
+
+  if (searchArray.length > 0) {
+    searchArray.forEach((recips, i) => {
+      if (i <= numberValid) {
+        return arrayDrink.push(recips);
+      }
+    });
+  } else {
+    drinkRecipe.forEach((recips, i) => {
+      if (i <= numberValid) {
+        return arrayDrink.push(recips);
+      }
+    });
+  }
 
   const handleInitialPage = () => {
     setButtonDrinks([]);
