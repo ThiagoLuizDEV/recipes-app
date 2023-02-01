@@ -4,9 +4,14 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
 import { FetchApiContext } from '../context/FetchsApi';
+import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import './Meals.css';
 
 export default function Meals() {
+  const {
+    searchArray,
+  } = useContext(SearchRecipesContext);
+
   const { mealsRecipeFetch,
     mealsRecipe,
     categoryMeal,
@@ -31,11 +36,19 @@ export default function Meals() {
 
   const arrayMeal = [];
 
-  mealsRecipe.forEach((recips, i) => {
-    if (i <= numberValid) {
-      return arrayMeal.push(recips);
-    }
-  });
+  if (searchArray.length > 0) {
+    searchArray.forEach((recips, i) => {
+      if (i <= numberValid) {
+        return arrayMeal.push(recips);
+      }
+    });
+  } else {
+    mealsRecipe.forEach((recips, i) => {
+      if (i <= numberValid) {
+        return arrayMeal.push(recips);
+      }
+    });
+  }
 
   const handleInitialPage = () => {
     // drinkRecipe.forEach((recips, i) => {
