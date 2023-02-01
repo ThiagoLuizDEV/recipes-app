@@ -8,14 +8,16 @@ export default function Footer() {
     <div data-testid="footer" className="fixarRodape">
       <div>
         <Link to="/drinks">
-          <button
+          <input
+            type="image"
             src={ drinkIcon }
             alt="Drink Icon "
             data-testid="drinks-bottom-btn"
           />
         </Link>
         <Link to="/meals">
-          <button
+          <input
+            type="image"
             src={ mealsIcon }
             alt="Meals Icon "
             data-testid="meals-bottom-btn"

@@ -21,7 +21,7 @@ export default function Profile() {
       <Link to="/favorite-recipes">
         <button
           type="submit"
-          data-testid="profile-favorite-btn"s
+          data-testid="profile-favorite-btn"
         >
           Favorite Recipes
         </button>
