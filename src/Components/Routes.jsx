@@ -20,7 +20,7 @@ function Routes() {
         <Route component={ Recipes } path="/recipes" />
         <Route component={ Meals } path="/meals/:id-da-receita/in-progress" />
         <Route component={ Donerecipes } path="/done-recipes" />
-        <Route component={ Favoritesrecipes } path="/favorites-recipes" />
+        <Route component={ Favoritesrecipes } path="/favorite-recipes" />
         <Route component={ Drink } path="/drinks" />
         <Route component={ Drink } path="/drinks/:id-da-receita/" />
         <Route component={ Drink } path="/drinks/:id-da-receita/in-progress" />
