@@ -23,6 +23,16 @@ export default function RecipeInProgress() {
         <button data-testid="favorite-btn" value="favoritos"> Favoritar</button>
         <button data-testid="share-btn">Share</button>
         <button data-testid="finish-recipe-btn">Finish</button>
+        <label htmlFor="item">
+          Ingredientes
+          <input
+            data-testid=${index}-ingredient-step
+            type="checkbox"
+            value="item"
+          />
+          {/* {category}
+          </input> */}
+        </label>
       </section>
     </div>
   );
