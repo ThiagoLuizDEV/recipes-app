@@ -41,6 +41,15 @@ export default function useChecksAPI() {
     }
   };
 
+  const checkSearchRecomendationsDataKey = () => {
+    if (pathname.includes('/meals')) {
+      return 'drinks';
+    }
+    if (pathname.includes('/drinks')) {
+      return 'meals';
+    }
+  };
+
   const checkSearchType = (radio) => {
     switch (radio) {
     case 'name':
@@ -59,6 +68,7 @@ export default function useChecksAPI() {
     checkWebsite,
     checkWebsiteForRecomendations,
     checkSearchDataKey,
+    checkSearchRecomendationsDataKey,
     checkSearchType,
   };
 }

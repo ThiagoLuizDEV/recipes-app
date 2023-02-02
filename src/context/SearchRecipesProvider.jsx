@@ -23,6 +23,7 @@ export default function SearchRecipesProvider({ children }) {
     checkWebsite,
     checkWebsiteForRecomendations,
     checkSearchDataKey,
+    checkSearchRecomendationsDataKey,
     checkSearchType,
   } = useChecksAPI();
 
@@ -59,7 +60,7 @@ export default function SearchRecipesProvider({ children }) {
 
   const fetchRecomendations = async () => {
     const siteName = checkWebsiteForRecomendations();
-    const dataKey = checkSearchDataKey();
+    const dataKey = checkSearchRecomendationsDataKey();
 
     const endpoint = `https://www.the${siteName}db.com/api/json/v1/1/search.php?s=`;
 

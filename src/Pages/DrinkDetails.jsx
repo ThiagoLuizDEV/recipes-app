@@ -1,13 +1,13 @@
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
+import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 
 export default function DrinkDetails() {
   const {
     fetchDetailsRecipe,
     detailedRecipe,
     fetchRecomendations,
-    recomendations,
   } = useContext(SearchRecipesContext);
 
   const { pathname } = useLocation();
@@ -44,51 +44,36 @@ export default function DrinkDetails() {
     return resultArray;
   };
 
-  const test = (e) => {
-    e.preventDefault();
-    console.log(detailedRecipe);
-    console.log(intoArray(detailedRecipe));
-  };
-
   return (
-    <>
-      <div>drink details</div>
-      <button
-        type="button"
-        onClick={ test }
-      >
-        test
-      </button>
-
-      <div>
-        <img
-          data-testid="recipe-photo"
-          src={ thumbnail }
-          style={ { width: 300 } }
-          alt="#"
-        />
-        <h1 data-testid="recipe-title">
-          { title }
-        </h1>
-        <h2 data-testid="recipe-category">
-          { category }
-        </h2>
-        <ul>
-          {
-            intoArray(detailedRecipe).map((el, i) => (
-              <li
-                key={ i }
-                data-testid={ `${i}-ingredient-name-and-measure` }
-              >
-                {`${el[0]} --- ${el[1]}`}
-              </li>
-            ))
-          }
-        </ul>
-        <p data-testid="instructions">
-          { instructions }
-        </p>
-      </div>
-    </>
+    <div>
+      <img
+        data-testid="recipe-photo"
+        src={ thumbnail }
+        style={ { width: 300 } }
+        alt="#"
+      />
+      <h1 data-testid="recipe-title">
+        { title }
+      </h1>
+      <h2 data-testid="recipe-category">
+        { category }
+      </h2>
+      <ul>
+        {
+          intoArray(detailedRecipe).map((el, i) => (
+            <li
+              key={ i }
+              data-testid={ `${i}-ingredient-name-and-measure` }
+            >
+              {`${el[0]} --- ${el[1]}`}
+            </li>
+          ))
+        }
+      </ul>
+      <p data-testid="instructions">
+        { instructions }
+      </p>
+      <RecomendationsCarousel />
+    </div>
   );
 }

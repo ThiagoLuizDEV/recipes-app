@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
+import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 
 export default function MealDetails() {
@@ -8,7 +9,6 @@ export default function MealDetails() {
     fetchDetailsRecipe,
     detailedRecipe,
     fetchRecomendations,
-    recomendations,
   } = useContext(SearchRecipesContext);
 
   const { pathname } = useLocation();
@@ -46,51 +46,37 @@ export default function MealDetails() {
     return resultArray;
   };
 
-  const test = (e) => {
-    e.preventDefault();
-    console.log(recomendations);
-  };
-
   return (
-    <>
-      <div>meal details</div>
-      <button
-        type="button"
-        onClick={ test }
-      >
-        test
-      </button>
-
-      <div>
-        <img
-          data-testid="recipe-photo"
-          src={ thumbnail }
-          style={ { width: 300 } }
-          alt="#"
-        />
-        <h1 data-testid="recipe-title">
-          { title }
-        </h1>
-        <h2 data-testid="recipe-category">
-          { category }
-        </h2>
-        <ul>
-          {
-            intoArray(detailedRecipe).map((el, i) => (
-              <li
-                key={ i }
-                data-testid={ `${i}-ingredient-name-and-measure` }
-              >
-                {`${el[0]} --- ${el[1]}`}
-              </li>
-            ))
-          }
-        </ul>
-        <p data-testid="instructions">
-          { instructions }
-        </p>
-        <YoutubeEmbed youtubeLink={ youtubeLink } />
-      </div>
-    </>
+    <div>
+      <img
+        data-testid="recipe-photo"
+        src={ thumbnail }
+        style={ { width: 300 } }
+        alt="#"
+      />
+      <h1 data-testid="recipe-title">
+        { title }
+      </h1>
+      <h2 data-testid="recipe-category">
+        { category }
+      </h2>
+      <ul>
+        {
+          intoArray(detailedRecipe).map((el, i) => (
+            <li
+              key={ i }
+              data-testid={ `${i}-ingredient-name-and-measure` }
+            >
+              {`${el[0]} --- ${el[1]}`}
+            </li>
+          ))
+        }
+      </ul>
+      <p data-testid="instructions">
+        { instructions }
+      </p>
+      <YoutubeEmbed youtubeLink={ youtubeLink } />
+      <RecomendationsCarousel />
+    </div>
   );
 }
