@@ -17,13 +17,36 @@ export default function SearchRecipesProvider({ children }) {
 
   const [searchArray, setSearchArray] = useState([]);
 
-  const checkPath = () => {
-    if (pathname === '/meals') {
-      // [siteName, dataKey]
-      return ['meal', 'meals'];
+  const [id, setId] = useState('');
+
+  const [detailedRecipe, setDetailedRecipe] = useState([]);
+
+  const checkPathName = () => {
+    switch (pathname) {
+    case '/meals':
+      return 'idMeal';
+    case '/drinks':
+      return 'idDrink';
+    default:
+      return null;
     }
-    if (pathname === '/drinks') {
-      return ['cocktail', 'drinks'];
+  };
+
+  const checkWebsite = () => {
+    if (pathname.includes('/meals')) {
+      return 'meal';
+    }
+    if (pathname.includes('/drinks')) {
+      return 'cocktail';
+    }
+  };
+
+  const checkSearchDataKey = () => {
+    if (pathname.includes('/meals')) {
+      return 'meals';
+    }
+    if (pathname.includes('/drinks')) {
+      return 'drinks';
     }
   };
 
@@ -40,8 +63,9 @@ export default function SearchRecipesProvider({ children }) {
     }
   };
 
-  const fetchRecipes = async () => {
-    const [siteName, dataKey] = checkPath();
+  const fetchSearchRecipes = async () => {
+    const siteName = checkWebsite();
+    const dataKey = checkSearchDataKey();
     const [type, definition] = checkSearchType();
 
     const endpoint = `https://www.the${siteName}db.com/api/json/v1/1/${type}.php?${definition}=${search}`;
@@ -52,15 +76,32 @@ export default function SearchRecipesProvider({ children }) {
     return data[dataKey];
   };
 
+  const fetchDetailsRecipe = async (recipeId) => {
+    const siteName = checkWebsite();
+    const dataKey = checkSearchDataKey();
+
+    const endpoint = `https://www.the${siteName}db.com/api/json/v1/1/lookup.php?i=${recipeId}`;
+
+    const response = await fetch(endpoint);
+    const data = await response.json();
+
+    setDetailedRecipe(data[dataKey]);
+  };
+
   const memo = useMemo(() => ({
-    fetchRecipes,
+    fetchSearchRecipes,
     search,
     radio,
     setRadio,
     setSearch,
     setSearchArray,
     searchArray,
-  }), [search, radio, searchArray]);
+    checkPathName,
+    setId,
+    id,
+    fetchDetailsRecipe,
+    detailedRecipe,
+  }), [search, radio, searchArray, id, detailedRecipe]);
 
   return (
     <SearchRecipesContext.Provider value={ memo }>

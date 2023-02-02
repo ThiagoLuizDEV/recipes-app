@@ -5,7 +5,7 @@ import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
 import { FetchApiContext } from '../context/FetchsApi';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
-import './Meals.css';
+import './styles/Recipes.css';
 
 export default function Meals() {
   const {

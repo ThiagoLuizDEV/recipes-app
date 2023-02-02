@@ -1,15 +1,33 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
-import { LoginContext } from '../context/LoginContext';
+// import { LoginContext } from '../context/LoginContext';
 
+// hi
 export default function Profile() {
-  const { login } = useContext(LoginContext);
+  const history = useHistory();
+  const logoutBtn = () => {
+    localStorage.clear();
+    history.push('/');
+  };
+
+  const email = localStorage.getItem('user');
+  console.log(email);
+  // const history = useHistory();
+  // const { login } = useContext(LoginContext);
+  // const emails = login.email;
+  // console.log(emails);
+  // const test = 'email@mail.com';
+  // for (let i = 0; i < localStorage.length; i += 1) {
+  //   const key = localStorage.key(i);
+  //   const value = localStorage.getItem(key);
+  //   console.log(key, value);
+  // }
   return (
     <div>
       <Header />
-      <h1 data-testid="profile-email">{login.email}</h1>
+      <h1 data-testid="profile-email">{email}</h1>
       <Link to="/done-recipes">
         <button
           type="submit"
@@ -26,15 +44,15 @@ export default function Profile() {
           Favorite Recipes
         </button>
       </Link>
-      <Link to="/">
+      <div>
         <button
-          type="submit"
+          type="button"
           data-testid="profile-logout-btn"
-          onClick={ localStorage.clear(login) }
+          onClick={ logoutBtn }
         >
           Logout
         </button>
-      </Link>
+      </div>
       <Footer />
     </div>
 

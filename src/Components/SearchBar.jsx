@@ -8,27 +8,18 @@ export default function SearchBar() {
     setSearch,
     radio,
     setRadio,
-    fetchRecipes,
+    fetchSearchRecipes,
     setSearchArray,
+    checkPathName,
+    setId,
   } = useContext(SearchRecipesContext);
 
   const history = useHistory();
   const { pathname } = useLocation();
 
-  const checkPathName = () => {
-    switch (pathname) {
-    case '/meals':
-      return 'idMeal';
-    case '/drinks':
-      return 'idDrink';
-    default:
-      return null;
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const recipes = await fetchRecipes();
+    const recipes = await fetchSearchRecipes();
 
     if (!recipes) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
@@ -36,7 +27,11 @@ export default function SearchBar() {
     }
 
     if (!!recipes && recipes.length <= 1) {
-      history.push(`${pathname}/${recipes[0][checkPathName()]}`);
+      const recipeId = recipes[0][checkPathName()];
+
+      history.push(`${pathname}/${recipeId}`);
+      setId(recipeId);
+
       return;
     }
 
