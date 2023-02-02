@@ -1,11 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 // import { LoginContext } from '../context/LoginContext';
 
 // hi
 export default function Profile() {
+  const history = useHistory();
+  const logoutBtn = () => {
+    localStorage.clear();
+    history.push('/');
+  };
+
   const email = localStorage.getItem('user');
   console.log(email);
   // const history = useHistory();
@@ -38,15 +44,15 @@ export default function Profile() {
           Favorite Recipes
         </button>
       </Link>
-      <Link to="/">
+      <div>
         <button
           type="button"
           data-testid="profile-logout-btn"
-          onClick={ localStorage.removeItem('user') }
+          onClick={ logoutBtn }
         >
           Logout
         </button>
-      </Link>
+      </div>
       <Footer />
     </div>
 
