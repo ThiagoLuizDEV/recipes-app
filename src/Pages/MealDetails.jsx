@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
@@ -10,6 +11,7 @@ export default function MealDetails() {
     detailedRecipe,
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
+  const history = useHistory();
 
   const { pathname } = useLocation();
   const recipeId = pathname.split('/')[2];
@@ -45,6 +47,9 @@ export default function MealDetails() {
 
     return resultArray;
   };
+  const handleClick = () => {
+    history.push(`${pathname}/in-progress`);
+  };
 
   return (
     <div>
@@ -57,6 +62,8 @@ export default function MealDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
+      <button data-testid="share-btn">Compartilhar</button>
+      <button data-testid="favorite-btn">Favoritar</button>
       <h2 data-testid="recipe-category">
         { category }
       </h2>
@@ -77,6 +84,14 @@ export default function MealDetails() {
       </p>
       <YoutubeEmbed youtubeLink={ youtubeLink } />
       <RecomendationsCarousel />
+      <button
+        className="fixarBottun"
+        type="button"
+        data-testid="start-recipe-btn"
+        onClick={ handleClick }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }

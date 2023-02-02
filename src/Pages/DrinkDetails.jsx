@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 
@@ -9,6 +10,7 @@ export default function DrinkDetails() {
     detailedRecipe,
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
+  const history = useHistory();
 
   const { pathname } = useLocation();
   const recipeId = pathname.split('/')[2];
@@ -44,6 +46,10 @@ export default function DrinkDetails() {
     return resultArray;
   };
 
+  const handleClick = () => {
+    history.push(`${pathname}/in-progress`);
+  };
+
   return (
     <div>
       <img
@@ -55,6 +61,8 @@ export default function DrinkDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
+      <button data-testid="share-btn">Compartilhar</button>
+      <button data-testid="favorite-btn">Favoritar</button>
       <h2 data-testid="recipe-category">
         { category }
       </h2>
@@ -74,6 +82,14 @@ export default function DrinkDetails() {
         { instructions }
       </p>
       <RecomendationsCarousel />
+      <button
+        className="fixarBottun"
+        type="button"
+        data-testid="start-recipe-btn"
+        onClick={ handleClick }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
