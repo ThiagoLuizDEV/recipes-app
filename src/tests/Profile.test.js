@@ -27,7 +27,6 @@ describe('Testando a página Profile', () => {
     expect(password).toBeInTheDocument();
     const btnLogin = screen.getByTestId('login-submit-btn');
 
-
     userEvent.type((email), 'bruno@bruno.com');
     userEvent.type((password), '1234567');
     userEvent.click(btnLogin);
@@ -40,6 +39,5 @@ describe('Testando a página Profile', () => {
     userEvent.click((logoutBtn));
     // const emailScreen = screen.getByText('bruno@bruno.com');
     // expect(emailScreen).toBeInTheDocument();
-    
   });
 });
