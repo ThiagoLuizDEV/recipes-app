@@ -6,15 +6,18 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import LoginProvider from './context/LoginContext';
 import FetchsApi from './context/FetchsApi';
+import FetchApiByCategory from './context/FetchApiByCategory';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <BrowserRouter>
       <FetchsApi>
-        <LoginProvider>
-          <App />
-        </LoginProvider>
+        <FetchApiByCategory>
+          <LoginProvider>
+            <App />
+          </LoginProvider>
+        </FetchApiByCategory>
       </FetchsApi>
     </BrowserRouter>,
   );
