@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import YoutubeEmbed from '../Components/YoutubeEmbed';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 
 export default function DrinkDetails() {

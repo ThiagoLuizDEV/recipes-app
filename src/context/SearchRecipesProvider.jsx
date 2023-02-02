@@ -2,6 +2,7 @@ import React, { useMemo, createContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { oneOfType, arrayOf, node } from 'prop-types';
 import useSearch from '../hooks/useSearch';
+import useFetch from '../hooks/useFetch';
 
 export const SearchRecipesContext = createContext();
 
@@ -12,6 +13,10 @@ export default function SearchRecipesProvider({ children }) {
     setRadio,
     setSearch,
   } = useSearch();
+
+  const {
+    fetchAPI,
+  } = useFetch();
 
   const { pathname } = useLocation();
 
@@ -70,9 +75,7 @@ export default function SearchRecipesProvider({ children }) {
 
     const endpoint = `https://www.the${siteName}db.com/api/json/v1/1/${type}.php?${definition}=${search}`;
 
-    const response = await fetch(endpoint);
-    const data = await response.json();
-
+    const data = await fetchAPI(endpoint);
     return data[dataKey];
   };
 
@@ -82,8 +85,7 @@ export default function SearchRecipesProvider({ children }) {
 
     const endpoint = `https://www.the${siteName}db.com/api/json/v1/1/lookup.php?i=${recipeId}`;
 
-    const response = await fetch(endpoint);
-    const data = await response.json();
+    const data = await fetchAPI(endpoint);
 
     const [dataRecipe] = data[dataKey];
     setDetailedRecipe(dataRecipe);
