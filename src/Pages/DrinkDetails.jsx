@@ -3,13 +3,22 @@ import { useLocation } from 'react-router-dom';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 
 export default function DrinkDetails() {
-  const { fetchDetailsRecipe, detailedRecipe } = useContext(SearchRecipesContext);
+  const {
+    fetchDetailsRecipe,
+    detailedRecipe,
+    fetchRecomendations,
+    recomendations,
+  } = useContext(SearchRecipesContext);
 
   const { pathname } = useLocation();
   const recipeId = pathname.split('/')[2];
 
   useEffect(() => {
-    fetchDetailsRecipe(recipeId);
+    const callApi = async () => {
+      await fetchRecomendations();
+      await fetchDetailsRecipe(recipeId);
+    };
+    callApi();
   }, []);
 
   const {

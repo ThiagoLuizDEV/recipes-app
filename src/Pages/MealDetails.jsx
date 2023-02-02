@@ -4,13 +4,22 @@ import YoutubeEmbed from '../Components/YoutubeEmbed';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 
 export default function MealDetails() {
-  const { fetchDetailsRecipe, detailedRecipe } = useContext(SearchRecipesContext);
+  const {
+    fetchDetailsRecipe,
+    detailedRecipe,
+    fetchRecomendations,
+    recomendations,
+  } = useContext(SearchRecipesContext);
 
   const { pathname } = useLocation();
   const recipeId = pathname.split('/')[2];
 
   useEffect(() => {
-    fetchDetailsRecipe(recipeId);
+    const callApi = async () => {
+      await fetchRecomendations();
+      await fetchDetailsRecipe(recipeId);
+    };
+    callApi();
   }, []);
 
   const {
@@ -39,8 +48,7 @@ export default function MealDetails() {
 
   const test = (e) => {
     e.preventDefault();
-    console.log(detailedRecipe);
-    console.log(intoArray(detailedRecipe));
+    console.log(recomendations);
   };
 
   return (
