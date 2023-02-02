@@ -85,7 +85,8 @@ export default function SearchRecipesProvider({ children }) {
     const response = await fetch(endpoint);
     const data = await response.json();
 
-    setDetailedRecipe(data[dataKey]);
+    const [dataRecipe] = data[dataKey];
+    setDetailedRecipe(dataRecipe);
   };
 
   const memo = useMemo(() => ({
