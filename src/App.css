@@ -15,6 +15,12 @@
   text-align: center;
   width: 90%;
 }
+.fixarBottun {
+  bottom: 0;
+  position: fixed;
+  text-align: center;
+  width: 50%;
+}
 
 .video-responsive {
   height: 0;

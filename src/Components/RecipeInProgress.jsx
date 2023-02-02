@@ -26,7 +26,7 @@ export default function RecipeInProgress() {
         <label htmlFor="item">
           Ingredientes
           <input
-            data-testid=${index}-ingredient-step
+            data-testid={ `${index}-ingredient-step` }
             type="checkbox"
             value="item"
           />
