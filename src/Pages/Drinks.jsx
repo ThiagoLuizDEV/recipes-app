@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
@@ -11,6 +12,7 @@ export default function Drinks() {
   const {
     searchArray,
   } = useContext(SearchRecipesContext);
+  const history = useHistory();
 
   const { drinkRecipeFetch,
     drinkRecipe, categoryDrink, drinkCategory } = useContext(FetchApiContext);
@@ -60,6 +62,10 @@ export default function Drinks() {
     return true;
   });
 
+  const imageClick = (e) => {
+    history.push(`drinks/${e.idDrink}`);
+  };
+
   const maxNumberOfDrinks = 12;
   const render = (drinks) => (
     drinks.slice(0, maxNumberOfDrinks).map((recips, index) => (
@@ -73,12 +79,14 @@ export default function Drinks() {
         >
           {recips.strDrink}
         </p>
-        <img
+        <input
+          type="image"
           width="150px"
           height="150px"
           src={ recips.strDrinkThumb }
           alt={ recips.idDrink }
           data-testid={ `${index}-card-img` }
+          onClick={ () => imageClick(recips) }
         />
       </div>
     ))
