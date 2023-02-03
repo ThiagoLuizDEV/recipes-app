@@ -5,8 +5,12 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import shareIcon from '../images/shareIcon.svg';
+import favoriteIcon from '../images/blackHeartIcon.svg';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function DrinkDetails() {
+  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
+
   const [isCopied, setIsCopied] = useState(false);
 
   const {
@@ -17,6 +21,10 @@ export default function DrinkDetails() {
   const history = useHistory();
 
   const { pathname } = useLocation();
+
+  const lastCharacter = -1;
+  const pageName = pathname.split('/')[1].slice(0, lastCharacter);
+
   const recipeId = pathname.split('/')[2];
 
   useEffect(() => {
@@ -28,9 +36,11 @@ export default function DrinkDetails() {
   }, []);
 
   const {
+    idDrink: id,
     strDrinkThumb: thumbnail,
+    strCategory: category,
     strDrink: title,
-    strAlcoholic: category,
+    strAlcoholic: isAlcoholic,
     strInstructions: instructions,
   } = detailedRecipe;
 
@@ -60,6 +70,30 @@ export default function DrinkDetails() {
     setIsCopied(true);
   };
 
+  const handleFavorite = () => {
+    console.log(detailedRecipe);
+    const duplicateFav = favRecipes.find((favRecipe) => favRecipe.id === id);
+
+    if (duplicateFav) {
+      const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
+
+      setFavRecipes(newFavRecipes);
+    } else {
+      setFavRecipes([
+        ...favRecipes,
+        {
+          id,
+          type: pageName,
+          nationality: '',
+          category,
+          alcoholicOrNot: isAlcoholic,
+          name: title,
+          image: thumbnail,
+        },
+      ]);
+    }
+  };
+
   return (
     <div>
       <img
@@ -79,13 +113,15 @@ export default function DrinkDetails() {
         onClick={ handleShare }
       />
       { isCopied && <div>Link copied!</div> }
-      <button
+      <input
+        type="image"
+        src={ favoriteIcon }
+        alt="favorite-btn"
         data-testid="favorite-btn"
-      >
-        Favoritar
-      </button>
+        onClick={ handleFavorite }
+      />
       <h2 data-testid="recipe-category">
-        { category }
+        { isAlcoholic }
       </h2>
       <ul>
         {

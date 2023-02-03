@@ -6,8 +6,12 @@ import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import shareIcon from '../images/shareIcon.svg';
+import favoriteIcon from '../images/blackHeartIcon.svg';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function MealDetails() {
+  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
+
   const [isCopied, setIsCopied] = useState(false);
 
   const {
@@ -19,6 +23,10 @@ export default function MealDetails() {
   const history = useHistory();
 
   const { pathname } = useLocation();
+
+  const lastCharacter = -1;
+  const pageName = pathname.split('/')[1].slice(0, lastCharacter);
+
   const recipeId = pathname.split('/')[2];
 
   useEffect(() => {
@@ -30,6 +38,8 @@ export default function MealDetails() {
   }, []);
 
   const {
+    idMeal: id,
+    strArea: nationality,
     strMealThumb: thumbnail,
     strMeal: title,
     strCategory: category,
@@ -63,6 +73,29 @@ export default function MealDetails() {
     setIsCopied(true);
   };
 
+  const handleFavorite = () => {
+    const duplicateFav = favRecipes.find((favRecipe) => favRecipe.id === id);
+
+    if (duplicateFav) {
+      const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
+
+      setFavRecipes(newFavRecipes);
+    } else {
+      setFavRecipes([
+        ...favRecipes,
+        {
+          id,
+          type: pageName,
+          nationality,
+          category,
+          alcoholicOrNot: '',
+          name: title,
+          image: thumbnail,
+        },
+      ]);
+    }
+  };
+
   return (
     <div>
       <img
@@ -82,11 +115,13 @@ export default function MealDetails() {
         onClick={ handleShare }
       />
       { isCopied && <div>Link copied!</div> }
-      <button
+      <input
+        type="image"
+        src={ favoriteIcon }
+        alt="favorite-btn"
         data-testid="favorite-btn"
-      >
-        Favoritar
-      </button>
+        onClick={ handleFavorite }
+      />
       <h2 data-testid="recipe-category">
         { category }
       </h2>
