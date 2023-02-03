@@ -1,21 +1,40 @@
+import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
+import StartRecipeButton from '../Components/StartRecipeButton';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import classes from './styles/DrinkDetails.module.css';
+import shareIcon from '../images/shareIcon.svg';
+import isFavoriteIcon from '../images/blackHeartIcon.svg';
+import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function MealDetails() {
+  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
   const [inProgress, setInProgress] = useState(false);
+
+  const [doneRecipes] = useLocalStorage('favoriteRecipes', []);
+
+  const [
+    wipRecipes,
+  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
+
+  const [isCopied, setIsCopied] = useState(false);
+
   const {
     fetchDetailsRecipe,
     detailedRecipe,
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
-  const history = useHistory();
 
   const { pathname } = useLocation();
+
+  const lastCharacter = -1;
+  const pageName = pathname.split('/')[1].slice(0, lastCharacter);
+  const localStorageKeyName = pathname.split('/')[1];
+
   const recipeId = pathname.split('/')[2];
 
   useEffect(() => {
@@ -28,6 +47,8 @@ export default function MealDetails() {
   }, []);
 
   const {
+    idMeal: id,
+    strArea: nationality,
     strMealThumb: thumbnail,
     strMeal: title,
     strCategory: category,
@@ -55,6 +76,50 @@ export default function MealDetails() {
     if (!inProgress) {
       setInProgress(true);
       history.push(`${pathname}in-progress`);
+
+  const handleShare = () => {
+    const copy = require('clipboard-copy');
+    copy(window.location.href);
+    setIsCopied(true);
+  };
+
+  const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
+
+  // wip recipes é onjeto
+  const findInWip = () => id in wipRecipes[localStorageKeyName];
+
+  const findInDone = () => doneRecipes?.find((doneRecipe) => doneRecipe.id === id);
+
+  const startButtonStatus = () => {
+    if (findInWip()) {
+      return 'wip';
+    }
+    if (findInDone()) {
+      return 'done';
+    }
+    return 'start';
+  };
+
+  const handleFavorite = () => {
+    const duplicateFav = findInFavorites();
+
+    if (duplicateFav) {
+      const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
+
+      setFavRecipes(newFavRecipes);
+    } else {
+      setFavRecipes([
+        ...favRecipes,
+        {
+          id,
+          type: pageName,
+          nationality,
+          category,
+          alcoholicOrNot: '',
+          name: title,
+          image: thumbnail,
+        },
+      ]);
     }
   };
 
@@ -69,8 +134,21 @@ export default function MealDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
-      <button data-testid="share-btn">Compartilhar</button>
-      <button data-testid="favorite-btn">Favoritar</button>
+      <input
+        type="image"
+        src={ shareIcon }
+        alt="share-btn"
+        data-testid="share-btn"
+        onClick={ handleShare }
+      />
+      { isCopied && <div>Link copied!</div> }
+      <input
+        type="image"
+        src={ !findInFavorites() ? isNotFavoriteIcon : isFavoriteIcon }
+        alt="favorite-btn"
+        data-testid="favorite-btn"
+        onClick={ handleFavorite }
+      />
       <h2 data-testid="recipe-category">
         { category }
       </h2>
@@ -124,6 +202,13 @@ export default function MealDetails() {
       >
         { inProgress ? 'Finish Recipe' : 'Start Recipe' }
       </button>
+      <YoutubeEmbed youtubeLink={ youtubeLink } />
+      <RecomendationsCarousel />
+      <StartRecipeButton
+        status={ startButtonStatus() }
+        recipeId={ id }
+        ingredients={ intoArray(detailedRecipe) }
+      />
     </div>
   );
 }
