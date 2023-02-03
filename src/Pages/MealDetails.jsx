@@ -1,9 +1,9 @@
 import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
+import StartRecipeButton from '../Components/StartRecipeButton';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import shareIcon from '../images/shareIcon.svg';
 import isFavoriteIcon from '../images/blackHeartIcon.svg';
@@ -13,6 +13,12 @@ import useLocalStorage from '../hooks/useLocalStorage';
 export default function MealDetails() {
   const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
 
+  const [doneRecipes] = useLocalStorage('favoriteRecipes', []);
+
+  const [
+    wipRecipes,
+  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
+
   const [isCopied, setIsCopied] = useState(false);
 
   const {
@@ -21,12 +27,11 @@ export default function MealDetails() {
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
 
-  const history = useHistory();
-
   const { pathname } = useLocation();
 
   const lastCharacter = -1;
   const pageName = pathname.split('/')[1].slice(0, lastCharacter);
+  const localStorageKeyName = pathname.split('/')[1];
 
   const recipeId = pathname.split('/')[2];
 
@@ -65,10 +70,6 @@ export default function MealDetails() {
     return resultArray;
   };
 
-  const handleStart = () => {
-    history.push(`${pathname}/in-progress`);
-  };
-
   const handleShare = () => {
     const copy = require('clipboard-copy');
     copy(window.location.href);
@@ -76,6 +77,21 @@ export default function MealDetails() {
   };
 
   const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
+
+  // wip recipes é onjeto
+  const findInWip = () => id in wipRecipes[localStorageKeyName];
+
+  const findInDone = () => doneRecipes?.find((doneRecipe) => doneRecipe.id === id);
+
+  const startButtonStatus = () => {
+    if (findInWip()) {
+      return 'wip';
+    }
+    if (findInDone()) {
+      return 'done';
+    }
+    return 'start';
+  };
 
   const handleFavorite = () => {
     const duplicateFav = findInFavorites();
@@ -146,14 +162,11 @@ export default function MealDetails() {
       </p>
       <YoutubeEmbed youtubeLink={ youtubeLink } />
       <RecomendationsCarousel />
-      <button
-        className="fixarBottun"
-        type="button"
-        data-testid="start-recipe-btn"
-        onClick={ handleStart }
-      >
-        Start Recipe
-      </button>
+      <StartRecipeButton
+        status={ startButtonStatus() }
+        recipeId={ id }
+        ingredients={ intoArray(detailedRecipe) }
+      />
     </div>
   );
 }
