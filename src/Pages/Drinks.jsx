@@ -19,15 +19,21 @@ export default function Drinks() {
 
   const {
     buttonDrinks,
-    setEndPointDrinks, setButtonDrinks } = useContext(FetchApiByCategoryContext);
+    setEndPointDrinks,
+    toggle,
+    setToggle,
+    setButtonDrinks } = useContext(FetchApiByCategoryContext);
 
   useEffect(() => {
     drinkRecipeFetch();
     drinkCategory();
   }, []);
 
-  const handleClick = (filter) => {
+  const handleClick = (event, filter) => {
+    event.preventDefault();
+
     setEndPointDrinks(filter);
+    setToggle(false);
   };
 
   const numberValid = 11;
@@ -49,9 +55,10 @@ export default function Drinks() {
     });
   }
 
-  const handleInitialPage = () => {
+  const handleInitialPage = (event) => {
+    event.preventDefault();
     setButtonDrinks([]);
-    console.log(buttonDrinks);
+    setToggle(true);
   };
 
   const filterDrinkUnique = [];
@@ -102,7 +109,8 @@ export default function Drinks() {
             type="submit"
             value={ filter }
             data-testid={ `${filter}-category-filter` }
-            onClick={ () => handleClick(filter) }
+            onClick={ toggle ? (e) => handleClick(e, filter)
+              : (e) => handleInitialPage(e) }
           >
             { filter }
           </button>
