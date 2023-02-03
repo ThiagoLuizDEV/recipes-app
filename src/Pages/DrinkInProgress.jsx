@@ -5,7 +5,7 @@ import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import classes from './styles/DrinkDetails.module.css';
 
-export default function DrinkDetails() {
+export default function DrinkInProgress() {
   const [inProgress, setInProgress] = useState(false);
   const {
     fetchDetailsRecipe,
@@ -52,6 +52,7 @@ export default function DrinkDetails() {
   const handleClick = () => {
     if (!inProgress) {
       setInProgress(true);
+      console.log(pathname);
       history.push(`${pathname}/in-progress`);
     }
   };

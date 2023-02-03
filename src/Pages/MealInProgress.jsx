@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { SearchRecipesContext } from '../context/SearchRecipesProvider';
+import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
+import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import classes from './styles/DrinkDetails.module.css';
 
-export default function DrinkDetails() {
+export default function MealInProgress() {
   const [inProgress, setInProgress] = useState(false);
   const {
     fetchDetailsRecipe,
@@ -24,12 +25,13 @@ export default function DrinkDetails() {
     };
     setInProgress(pathname.includes('progress'));
     callApi();
-  }, [pathname]);
+  }, []);
 
   const {
-    strDrinkThumb: thumbnail,
-    strDrink: title,
-    strAlcoholic: category,
+    strMealThumb: thumbnail,
+    strMeal: title,
+    strCategory: category,
+    strYoutube: youtubeLink,
     strInstructions: instructions,
   } = detailedRecipe;
 
@@ -52,6 +54,7 @@ export default function DrinkDetails() {
   const handleClick = () => {
     if (!inProgress) {
       setInProgress(true);
+      console.log(pathname);
       history.push(`${pathname}/in-progress`);
     }
   };
@@ -106,9 +109,14 @@ export default function DrinkDetails() {
       <p data-testid="instructions">
         { instructions }
       </p>
-      { inProgress ? null : (
-        <RecomendationsCarousel />
-      ) }
+      {
+        inProgress ? null : (
+          <>
+            <YoutubeEmbed youtubeLink={ youtubeLink } />
+            <RecomendationsCarousel />
+          </>
+        )
+      }
       <button
         className="fixarBottun"
         type="button"
