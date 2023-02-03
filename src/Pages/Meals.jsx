@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
@@ -11,6 +12,7 @@ export default function Meals() {
   const {
     searchArray,
   } = useContext(SearchRecipesContext);
+  const history = useHistory();
 
   const { mealsRecipeFetch,
     mealsRecipe,
@@ -68,6 +70,9 @@ export default function Meals() {
   });
 
   console.log(searchArray);
+  const imageClick = (e) => {
+    history.push(`meals/${e.idMeal}`);
+  };
 
   const maxNumberOfRecipes = 12;
   const render = (recipes) => (
@@ -82,12 +87,14 @@ export default function Meals() {
         >
           {recips.strMeal}
         </p>
-        <img
+        <input
+          type="image"
           width="150px"
           height="150px"
           src={ recips.strMealThumb }
           alt={ recips.idMeal }
           data-testid={ `${index}-card-img` }
+          onClick={ () => imageClick(recips) }
         />
       </div>
     ))

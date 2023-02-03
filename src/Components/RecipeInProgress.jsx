@@ -1,15 +1,13 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
-import { FetchApiContext } from '../context/FetchsApi';
+// import { FetchApiContext } from '../context/FetchsApi';
 
 export default function RecipeInProgress() {
-  const { drinkRecipeFetch,
-    drinkRecipe, categoryDrink, drinkCategory } = useContext(FetchApiContext);
+  // const { drinkRecipeFetch,
+  //   drinkRecipe, categoryDrink, drinkCategory } = useContext(FetchApiContext);
 
   return (
     <div>
-      { arrayMeal.map((recips, index) => (
+      {/* { arrayMeal.map((recips, index) => (
         <img
           data-testid={ `${index}recipe-photo` }
           src={ image }
@@ -32,8 +30,8 @@ export default function RecipeInProgress() {
           />
           {/* {category}
           </input> */}
-        </label>
-      </section>
+      {/* </label>
+      </section> */}
     </div>
   );
 }
