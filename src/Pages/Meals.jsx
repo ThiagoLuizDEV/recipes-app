@@ -22,15 +22,21 @@ export default function Meals() {
 
   const {
     buttonMeals,
-    setEndPointMeals, setButtonMeals } = useContext(FetchApiByCategoryContext);
+    setEndPointMeals,
+    toggle,
+    setToggle,
+    setButtonMeals } = useContext(FetchApiByCategoryContext);
 
   useEffect(() => {
     mealsRecipeFetch();
     mealCategory();
   }, []);
 
-  const handleClick = (filter) => {
+  const handleClick = (event, filter) => {
+    event.preventDefault();
+
     setEndPointMeals(filter);
+    setToggle(false);
   };
 
   const numberValid = 11;
@@ -52,13 +58,10 @@ export default function Meals() {
     });
   }
 
-  const handleInitialPage = () => {
-    // drinkRecipe.forEach((recips, i) => {
-    //   if (i <= numberValid) {
-    //     return arrayDrink.push(recips);
-    //   }
-    // });
+  const handleInitialPage = (event) => {
+    event.preventDefault();
     setButtonMeals([]);
+    setToggle(true);
   };
 
   const filterMealUnique = [];
@@ -109,7 +112,8 @@ export default function Meals() {
             key={ filter }
             value={ filter }
             data-testid={ `${filter}-category-filter` }
-            onClick={ () => handleClick(filter) }
+            onClick={ toggle ? (e) => handleClick(e, filter)
+              : (e) => handleInitialPage(e) }
           >
             {filter}
           </button>

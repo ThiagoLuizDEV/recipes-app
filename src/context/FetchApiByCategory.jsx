@@ -9,6 +9,7 @@ function FetchApiByCategory({ children }) {
   const [endPointMeals, setEndPointMeals] = useState('');
   const [buttonDrinks, setButtonDrinks] = useState([]);
   const [endPointDrinks, setEndPointDrinks] = useState('');
+  const [toggle, setToggle] = useState(true);
 
   const fetchMeals = async () => {
     await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${endPointMeals}`)
@@ -46,6 +47,8 @@ function FetchApiByCategory({ children }) {
     setEndPointDrinks,
     endPointDrinks,
     setButtonDrinks,
+    toggle,
+    setToggle,
   }), [buttonMeals, endPointMeals, buttonDrinks, endPointDrinks]);
 
   return (
