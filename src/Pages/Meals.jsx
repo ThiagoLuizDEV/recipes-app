@@ -76,7 +76,7 @@ export default function Meals() {
   const imageClick = (e) => {
     history.push(`meals/${e.idMeal}`);
   };
-
+  
   const maxNumberOfRecipes = 12;
   const render = (recipes) => (
     recipes.slice(0, maxNumberOfRecipes).map((recips, index) => (

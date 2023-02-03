@@ -12,8 +12,8 @@ export default function YoutubeEmbed({ youtubeLink }) {
       data-testid="video"
     >
       <iframe
-        width="853"
-        height="480"
+        width="300"
+        height="240"
         src={ link }
         frameBorder="0"
         allow={ `${ALLOW_PART_1} ${ALLOW_PART_2}` }
