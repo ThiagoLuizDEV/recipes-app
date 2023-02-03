@@ -5,7 +5,8 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import shareIcon from '../images/shareIcon.svg';
-import favoriteIcon from '../images/blackHeartIcon.svg';
+import isFavoriteIcon from '../images/blackHeartIcon.svg';
+import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function DrinkDetails() {
@@ -70,9 +71,10 @@ export default function DrinkDetails() {
     setIsCopied(true);
   };
 
+  const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
+
   const handleFavorite = () => {
-    console.log(detailedRecipe);
-    const duplicateFav = favRecipes.find((favRecipe) => favRecipe.id === id);
+    const duplicateFav = findInFavorites();
 
     if (duplicateFav) {
       const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
@@ -115,7 +117,7 @@ export default function DrinkDetails() {
       { isCopied && <div>Link copied!</div> }
       <input
         type="image"
-        src={ favoriteIcon }
+        src={ !findInFavorites() ? isNotFavoriteIcon : isFavoriteIcon }
         alt="favorite-btn"
         data-testid="favorite-btn"
         onClick={ handleFavorite }

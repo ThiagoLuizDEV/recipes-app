@@ -6,7 +6,8 @@ import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import shareIcon from '../images/shareIcon.svg';
-import favoriteIcon from '../images/blackHeartIcon.svg';
+import isFavoriteIcon from '../images/blackHeartIcon.svg';
+import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function MealDetails() {
@@ -34,6 +35,7 @@ export default function MealDetails() {
       await fetchRecomendations();
       await fetchDetailsRecipe(recipeId);
     };
+
     callApi();
   }, []);
 
@@ -73,8 +75,10 @@ export default function MealDetails() {
     setIsCopied(true);
   };
 
+  const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
+
   const handleFavorite = () => {
-    const duplicateFav = favRecipes.find((favRecipe) => favRecipe.id === id);
+    const duplicateFav = findInFavorites();
 
     if (duplicateFav) {
       const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
@@ -117,7 +121,7 @@ export default function MealDetails() {
       { isCopied && <div>Link copied!</div> }
       <input
         type="image"
-        src={ favoriteIcon }
+        src={ !findInFavorites() ? isNotFavoriteIcon : isFavoriteIcon }
         alt="favorite-btn"
         data-testid="favorite-btn"
         onClick={ handleFavorite }
