@@ -37,7 +37,5 @@ describe('Testando a página Profile', () => {
     const logoutBtn = screen.getByTestId('profile-logout-btn');
     expect(logoutBtn).toBeInTheDocument();
     userEvent.click((logoutBtn));
-    // const emailScreen = screen.getByText('bruno@bruno.com');
-    // expect(emailScreen).toBeInTheDocument();
   });
 });

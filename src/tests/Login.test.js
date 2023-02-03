@@ -3,16 +3,21 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 import userEvent from '@testing-library/user-event';
 import LoginProvider from '../context/LoginContext';
+import FetchApiByCategory from '../context/FetchApiByCategory';
+import FetchsApi from '../context/FetchsApi';
 import App from '../App';
 
 describe('testando a página de login', () => {
   test(' mostra na pagina os campos de login ', () => {
     render(
       <BrowserRouter>
-        <LoginProvider>
-          <App />
-        </LoginProvider>
-        ,
+        <FetchsApi>
+          <FetchApiByCategory>
+            <LoginProvider>
+              <App />
+            </LoginProvider>
+          </FetchApiByCategory>
+        </FetchsApi>
       </BrowserRouter>,
     );
 
