@@ -1,16 +1,21 @@
-import { useContext, useEffect } from 'react';
+import require from 'clipboard-copy';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
+import shareIcon from '../images/shareIcon.svg';
 
 export default function MealDetails() {
+  const [isCopied, setIsCopied] = useState(false);
+
   const {
     fetchDetailsRecipe,
     detailedRecipe,
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
+
   const history = useHistory();
 
   const { pathname } = useLocation();
@@ -47,8 +52,15 @@ export default function MealDetails() {
 
     return resultArray;
   };
-  const handleClick = () => {
+
+  const handleStart = () => {
     history.push(`${pathname}/in-progress`);
+  };
+
+  const handleShare = () => {
+    const copy = require('clipboard-copy');
+    copy(window.location.href);
+    setIsCopied(true);
   };
 
   return (
@@ -62,8 +74,19 @@ export default function MealDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
-      <button data-testid="share-btn">Compartilhar</button>
-      <button data-testid="favorite-btn">Favoritar</button>
+      <input
+        type="image"
+        src={ shareIcon }
+        alt="share-btn"
+        data-testid="share-btn"
+        onClick={ handleShare }
+      />
+      { isCopied && <div>Link copied!</div> }
+      <button
+        data-testid="favorite-btn"
+      >
+        Favoritar
+      </button>
       <h2 data-testid="recipe-category">
         { category }
       </h2>
@@ -88,7 +111,7 @@ export default function MealDetails() {
         className="fixarBottun"
         type="button"
         data-testid="start-recipe-btn"
-        onClick={ handleClick }
+        onClick={ handleStart }
       >
         Start Recipe
       </button>

@@ -1,10 +1,14 @@
-import { useContext, useEffect } from 'react';
+import require from 'clipboard-copy';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
+import shareIcon from '../images/shareIcon.svg';
 
 export default function DrinkDetails() {
+  const [isCopied, setIsCopied] = useState(false);
+
   const {
     fetchDetailsRecipe,
     detailedRecipe,
@@ -50,6 +54,12 @@ export default function DrinkDetails() {
     history.push(`${pathname}/in-progress`);
   };
 
+  const handleShare = () => {
+    const copy = require('clipboard-copy');
+    copy(window.location.href);
+    setIsCopied(true);
+  };
+
   return (
     <div>
       <img
@@ -61,8 +71,19 @@ export default function DrinkDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
-      <button data-testid="share-btn">Compartilhar</button>
-      <button data-testid="favorite-btn">Favoritar</button>
+      <input
+        type="image"
+        src={ shareIcon }
+        alt="share-btn"
+        data-testid="share-btn"
+        onClick={ handleShare }
+      />
+      { isCopied && <div>Link copied!</div> }
+      <button
+        data-testid="favorite-btn"
+      >
+        Favoritar
+      </button>
       <h2 data-testid="recipe-category">
         { category }
       </h2>
