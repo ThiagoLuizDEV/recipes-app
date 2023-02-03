@@ -49,7 +49,6 @@ export default function Drinks() {
 
   const handleInitialPage = () => {
     setButtonDrinks([]);
-    console.log(buttonDrinks);
   };
 
   const filterDrinkUnique = [];

@@ -13,7 +13,7 @@ function RecomendationsCarousel() {
   const key = pathname.includes('/meals') ? 'Drink' : 'Meal';
 
   return (
-    <Carousel variant="dark">
+    <Carousel variant="dark" style={ { marginBottom: '80px' } }>
       {
         renderRecomendations.map((el, i) => (
           <Carousel.Item
@@ -23,7 +23,7 @@ function RecomendationsCarousel() {
             <Carousel.Caption
               data-testid={ `${i}-recommendation-title` }
             >
-              <h3>{ el[`str${key}`] }</h3>
+              { el[`str${key}`] }
             </Carousel.Caption>
             <img
               width="150px"

@@ -22,12 +22,12 @@ function Routes() {
         <Route component={ Profile } path="/profile" />
         <Route component={ Meals } exact path="/meals" />
         <Route component={ MealDetails } path={ `/meals/${id}` } />
-        <Route component={ Meals } path="/meals/:id-da-receita/in-progress" />
+        <Route component={ MealDetails } path="/meals/:id-da-receita/in-progress" />
         <Route component={ Donerecipes } path="/done-recipes" />
         <Route component={ Favoritesrecipes } path="/favorite-recipes" />
         <Route component={ Drink } exact path="/drinks" />
         <Route component={ DrinkDetails } path={ `/drinks/${id}` } />
-        <Route component={ Drink } path="/drinks/:id-da-receita/in-progress" />
+        <Route component={ DrinkDetails } path="/drinks/:id-da-receita/in-progress" />
       </Switch>
     </Route>
   );
