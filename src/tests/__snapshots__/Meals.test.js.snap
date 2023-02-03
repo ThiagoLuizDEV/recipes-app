@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testando a page Recipes Testando o componente Meals completo 1`] = `
+<DocumentFragment>
+  <div
+    class="meals"
+  >
+    <div>
+      <form>
+        <h3>
+          Insira seu Email:
+        </h3>
+        <input
+          data-testid="email-input"
+          id="email"
+          name="email"
+          placeholder="Digite aqui seu email"
+          type="email"
+          value=""
+        />
+        <h3>
+          Insira sua password:
+        </h3>
+        <input
+          data-testid="password-input"
+          id="password"
+          name="password"
+          type="password"
+          value=""
+        />
+        <button
+          data-testid="login-submit-btn"
+          disabled=""
+          type="button"
+        >
+          Play
+        </button>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Testando a page Recipes Testando o componente Recipes completo 1`] = `
+<DocumentFragment>
+  <div
+    class="meals"
+  >
+    <div>
+      <form>
+        <h3>
+          Insira seu Email:
+        </h3>
+        <input
+          data-testid="email-input"
+          id="email"
+          name="email"
+          placeholder="Digite aqui seu email"
+          type="email"
+          value=""
+        />
+        <h3>
+          Insira sua password:
+        </h3>
+        <input
+          data-testid="password-input"
+          id="password"
+          name="password"
+          type="password"
+          value=""
+        />
+        <button
+          data-testid="login-submit-btn"
+          disabled=""
+          type="button"
+        >
+          Play
+        </button>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;

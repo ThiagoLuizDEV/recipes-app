@@ -67,6 +67,8 @@ export default function Meals() {
     }
   });
 
+  console.log(searchArray);
+
   const maxNumberOfRecipes = 12;
   const render = (recipes) => (
     recipes.slice(0, maxNumberOfRecipes).map((recips, index) => (
