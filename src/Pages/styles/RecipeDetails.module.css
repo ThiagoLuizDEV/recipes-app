@@ -1,0 +1,16 @@
+.instruction:has( input:checked ) {
+  text-decoration: line-through solid black;
+}
+
+.item {
+  list-style: none;
+  margin-right: -8px;
+  position: relative;
+}
+
+.checkbox {
+  left: -16px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

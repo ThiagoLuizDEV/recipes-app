@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
-import classes from './styles/DrinkDetails.module.css';
+import classes from './styles/RecipeDetails.module.css';
 
 export default function DrinkInProgress() {
   const [inProgress, setInProgress] = useState(false);
@@ -50,11 +50,11 @@ export default function DrinkInProgress() {
   };
 
   const handleClick = () => {
-    if (!inProgress) {
-      setInProgress(true);
-      console.log(pathname);
-      history.push(`${pathname}/in-progress`);
-    }
+    // if (!inProgress) {
+    //   setInProgress(true);
+    //   console.log(pathname);
+    //   history.push(`${pathname}/in-progress`);
+    // }
   };
 
   return (
