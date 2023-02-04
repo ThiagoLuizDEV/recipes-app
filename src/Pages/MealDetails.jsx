@@ -1,24 +1,13 @@
 import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
-import { useLocation, withRouter } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
-import StartRecipeButton from '../Components/StartRecipeButton';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import shareIcon from '../images/shareIcon.svg';
-import isFavoriteIcon from '../images/blackHeartIcon.svg';
-import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
-import useLocalStorage from '../hooks/useLocalStorage';
 
-function MealDetails() {
-  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
-
-  const [doneRecipes] = useLocalStorage('favoriteRecipes', []);
-
-  const [
-    wipRecipes,
-  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
-
+export default function MealDetails() {
   const [isCopied, setIsCopied] = useState(false);
 
   const {
@@ -26,6 +15,7 @@ function MealDetails() {
     detailedRecipe,
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
+
   const history = useHistory();
 
   const { pathname } = useLocation();
@@ -40,9 +30,10 @@ function MealDetails() {
   }, []);
 
   const {
-    strDrinkThumb: thumbnail,
-    strDrink: title,
-    strAlcoholic: category,
+    strMealThumb: thumbnail,
+    strMeal: title,
+    strCategory: category,
+    strYoutube: youtubeLink,
     strInstructions: instructions,
   } = detailedRecipe;
 
@@ -62,56 +53,14 @@ function MealDetails() {
     return resultArray;
   };
 
+  const handleStart = () => {
+    history.push(`${pathname}/in-progress`);
+  };
 
-  const handleClick = () => {
-    if (!inProgress) {
-      setInProgress(true);
-      console.log(pathname);
-      history.push(`${pathname}/in-progress`);
   const handleShare = () => {
     const copy = require('clipboard-copy');
     copy(window.location.href);
     setIsCopied(true);
-  };
-
-  const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
-
-  // wip recipes é onjeto
-  const findInWip = () => id in wipRecipes[localStorageKeyName];
-
-  const findInDone = () => doneRecipes?.find((doneRecipe) => doneRecipe.id === id);
-
-  const startButtonStatus = () => {
-    if (findInWip()) {
-      return 'wip';
-    }
-    if (findInDone()) {
-      return 'done';
-    }
-    return 'start';
-  };
-
-  const handleFavorite = () => {
-    const duplicateFav = findInFavorites();
-
-    if (duplicateFav) {
-      const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
-
-      setFavRecipes(newFavRecipes);
-    } else {
-      setFavRecipes([
-        ...favRecipes,
-        {
-          id,
-          type: pageName,
-          nationality,
-          category,
-          alcoholicOrNot: '',
-          name: title,
-          image: thumbnail,
-        },
-      ]);
-    }
   };
 
   return (
@@ -125,8 +74,19 @@ function MealDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
-      <button data-testid="share-btn">Compartilhar</button>
-      <button data-testid="favorite-btn">Favoritar</button>
+      <input
+        type="image"
+        src={ shareIcon }
+        alt="share-btn"
+        data-testid="share-btn"
+        onClick={ handleShare }
+      />
+      { isCopied && <div>Link copied!</div> }
+      <button
+        data-testid="favorite-btn"
+      >
+        Favoritar
+      </button>
       <h2 data-testid="recipe-category">
         { category }
       </h2>
@@ -137,9 +97,7 @@ function MealDetails() {
               key={ i }
               data-testid={ `${i}-ingredient-name-and-measure` }
             >
-              {
-                `${el[0]} --- ${el[1]}`
-              }
+              {`${el[0]} --- ${el[1]}`}
             </li>
           ))
         }
@@ -149,13 +107,14 @@ function MealDetails() {
       </p>
       <YoutubeEmbed youtubeLink={ youtubeLink } />
       <RecomendationsCarousel />
-      <StartRecipeButton
-        status={ startButtonStatus() }
-        recipeId={ id }
-        ingredients={ intoArray(detailedRecipe) }
-      />
+      <button
+        className="fixarBottun"
+        type="button"
+        data-testid="start-recipe-btn"
+        onClick={ handleStart }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
-
-export default withRouter(MealDetails);
