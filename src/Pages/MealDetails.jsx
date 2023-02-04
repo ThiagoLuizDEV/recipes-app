@@ -50,6 +50,19 @@ export default function MealDetails() {
     copy(window.location.href);
     setIsCopied(true);
   };
+  const handleFavorite = () => {
+    console.log(detailedRecipe);
+    localStorage.setItem('favoriteRecipes', JSON.stringify([{
+      id: detailedRecipe.idMeal,
+      type: 'meal',
+      nationality: detailedRecipe.strArea,
+      category: detailedRecipe.strCategory,
+      alcoholicOrNot: '',
+      name: detailedRecipe.strMeal,
+      image: detailedRecipe.strMealThumb,
+
+    }]));
+  };
 
   return (
     <div>
@@ -72,6 +85,7 @@ export default function MealDetails() {
       { isCopied && <div>Link copied!</div> }
       <button
         data-testid="favorite-btn"
+        onClick={ handleFavorite }
       >
         Favoritar
       </button>

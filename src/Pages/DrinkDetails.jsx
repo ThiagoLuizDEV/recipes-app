@@ -48,6 +48,20 @@ export default function DrinkDetails() {
     setIsCopied(true);
   };
 
+  const handleFavorite = () => {
+    console.log(detailedRecipe);
+    localStorage.setItem('favoriteRecipes', JSON.stringify([{
+      id: detailedRecipe.idDrink,
+      type: 'drink',
+      nationality: '',
+      category: detailedRecipe.strCategory,
+      alcoholicOrNot: detailedRecipe.strAlcoholic,
+      name: detailedRecipe.strDrink,
+      image: detailedRecipe.strDrinkThumb,
+
+    }]));
+  };
+
   return (
     <div>
       <img
@@ -69,6 +83,7 @@ export default function DrinkDetails() {
       { isCopied && <div>Link copied!</div> }
       <button
         data-testid="favorite-btn"
+        onClick={ handleFavorite }
       >
         Favoritar
       </button>
