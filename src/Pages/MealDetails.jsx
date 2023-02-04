@@ -1,3 +1,5 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
+import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -49,11 +51,55 @@ export default function DrinkInProgress() {
     return resultArray;
   };
 
+
   const handleClick = () => {
     if (!inProgress) {
       setInProgress(true);
       console.log(pathname);
       history.push(`${pathname}/in-progress`);
+  const handleShare = () => {
+    const copy = require('clipboard-copy');
+    copy(window.location.href);
+    setIsCopied(true);
+  };
+
+  const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
+
+  // wip recipes é onjeto
+  const findInWip = () => id in wipRecipes[localStorageKeyName];
+
+  const findInDone = () => doneRecipes?.find((doneRecipe) => doneRecipe.id === id);
+
+  const startButtonStatus = () => {
+    if (findInWip()) {
+      return 'wip';
+    }
+    if (findInDone()) {
+      return 'done';
+    }
+    return 'start';
+  };
+
+  const handleFavorite = () => {
+    const duplicateFav = findInFavorites();
+
+    if (duplicateFav) {
+      const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
+
+      setFavRecipes(newFavRecipes);
+    } else {
+      setFavRecipes([
+        ...favRecipes,
+        {
+          id,
+          type: pageName,
+          nationality,
+          category,
+          alcoholicOrNot: '',
+          name: title,
+          image: thumbnail,
+        },
+      ]);
     }
   };
 

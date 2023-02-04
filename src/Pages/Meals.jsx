@@ -74,6 +74,10 @@ export default function Meals() {
       return filterMealUnique.push(cat.strCategory);
     }
   });
+  
+  const imageClick = (e) => {
+    history.push(`meals/${e.idMeal}`);
+  };
 
   const maxNumberOfRecipes = 12;
   const render = (recipes) => (
