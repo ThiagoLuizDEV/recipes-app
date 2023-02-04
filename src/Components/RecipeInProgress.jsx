@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 // import { FetchApiContext } from '../context/FetchsApi';
 
