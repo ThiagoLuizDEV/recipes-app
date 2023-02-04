@@ -50,11 +50,11 @@ export default function DrinkInProgress() {
   };
 
   const handleClick = () => {
-    // if (!inProgress) {
-    //   setInProgress(true);
-    //   console.log(pathname);
-    //   history.push(`${pathname}/in-progress`);
-    // }
+    if (!inProgress) {
+      setInProgress(true);
+      console.log(pathname);
+      history.push(`${pathname}/in-progress`);
+    }
   };
 
   return (
