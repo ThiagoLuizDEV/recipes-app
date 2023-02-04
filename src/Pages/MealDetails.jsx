@@ -1,11 +1,12 @@
 import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import shareIcon from '../images/shareIcon.svg';
+import Button from '../Components/Button';
+import Ingredients from '../Components/Ingredients';
 
 export default function MealDetails() {
   const [isCopied, setIsCopied] = useState(false);
@@ -16,10 +17,10 @@ export default function MealDetails() {
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
 
-  const history = useHistory();
-
   const { pathname } = useLocation();
   const recipeId = pathname.split('/')[2];
+
+  const [inProgress, setInProgress] = useState(false);
 
   useEffect(() => {
     const callApi = async () => {
@@ -27,6 +28,13 @@ export default function MealDetails() {
       await fetchDetailsRecipe(recipeId);
     };
     callApi();
+    let recipesArray = localStorage.getItem('inProgressRecipes');
+    console.log(recipesArray);
+    if (recipesArray) {
+      recipesArray = JSON.parse(recipesArray);
+      const startedRecipes = recipesArray.meals ? Object.keys(recipesArray.meals) : [];
+      setInProgress(startedRecipes.includes(recipeId));
+    }
   }, []);
 
   const {
@@ -36,26 +44,6 @@ export default function MealDetails() {
     strYoutube: youtubeLink,
     strInstructions: instructions,
   } = detailedRecipe;
-
-  const intoArray = (recipe) => {
-    const resultArray = [];
-    const maxIngredients = 21;
-
-    for (let i = 1; i < maxIngredients; i += 1) {
-      const ingredient = recipe[`strIngredient${i}`];
-      const measure = recipe[`strMeasure${i}`];
-
-      if (ingredient?.length >= 1) {
-        resultArray.push([ingredient, measure]);
-      }
-    }
-
-    return resultArray;
-  };
-
-  const handleStart = () => {
-    history.push(`${pathname}/in-progress`);
-  };
 
   const handleShare = () => {
     const copy = require('clipboard-copy');
@@ -91,30 +79,31 @@ export default function MealDetails() {
         { category }
       </h2>
       <ul>
-        {
-          intoArray(detailedRecipe).map((el, i) => (
-            <li
-              key={ i }
-              data-testid={ `${i}-ingredient-name-and-measure` }
-            >
-              {`${el[0]} --- ${el[1]}`}
-            </li>
-          ))
-        }
+        <Ingredients
+          pathname={ pathname }
+          detailedRecipe={ detailedRecipe }
+          category="meals"
+          recipeId={ recipeId }
+        />
       </ul>
       <p data-testid="instructions">
         { instructions }
       </p>
-      <YoutubeEmbed youtubeLink={ youtubeLink } />
-      <RecomendationsCarousel />
-      <button
-        className="fixarBottun"
-        type="button"
-        data-testid="start-recipe-btn"
-        onClick={ handleStart }
-      >
-        Start Recipe
-      </button>
+      {
+        pathname.includes('progress') ? null : (
+          <>
+            <YoutubeEmbed youtubeLink={ youtubeLink } />
+            <RecomendationsCarousel />
+          </>
+        )
+      }
+      <Button
+        inProgress={ inProgress }
+        pathname={ pathname }
+        recipeId={ recipeId }
+        setInProgress={ setInProgress }
+        category="meals"
+      />
     </div>
   );
 }
