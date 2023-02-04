@@ -22,7 +22,6 @@ export default function DrinkDetails() {
 
   const [isCopied, setIsCopied] = useState(false);
 
-
   const {
     fetchDetailsRecipe,
     detailedRecipe,
@@ -44,6 +43,7 @@ export default function DrinkDetails() {
     };
     setInProgress(pathname.includes('progress'));
     callApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const {
@@ -70,11 +70,6 @@ export default function DrinkDetails() {
 
     return resultArray;
   };
-
-  const handleClick = () => {
-    if (!inProgress) {
-      setInProgress(true);
-      history.push(`${pathname}/in-progress`);
 
   const handleShare = () => {
     const copy = require('clipboard-copy');

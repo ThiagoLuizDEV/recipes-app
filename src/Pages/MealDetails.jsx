@@ -1,3 +1,4 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
 import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -44,6 +45,7 @@ export default function MealDetails() {
     };
     setInProgress(pathname.includes('progress'));
     callApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {
@@ -71,11 +73,6 @@ export default function MealDetails() {
 
     return resultArray;
   };
-
-  const handleClick = () => {
-    if (!inProgress) {
-      setInProgress(true);
-      history.push(`${pathname}in-progress`);
 
   const handleShare = () => {
     const copy = require('clipboard-copy');
