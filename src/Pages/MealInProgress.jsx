@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, withRouter } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import YoutubeEmbed from '../Components/YoutubeEmbed';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import classes from './styles/DrinkDetails.module.css';
 
-export default function MealInProgress() {
+function MealInProgress() {
   const [inProgress, setInProgress] = useState(false);
   const {
     fetchDetailsRecipe,
@@ -128,3 +128,5 @@ export default function MealInProgress() {
     </div>
   );
 }
+
+export default withRouter(MealInProgress);

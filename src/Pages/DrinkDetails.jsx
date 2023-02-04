@@ -3,10 +3,15 @@ import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
-import classes from './styles/DrinkDetails.module.css';
+import StartRecipeButton from '../Components/StartRecipeButton';
+import shareIcon from '../images/shareIcon.svg';
+import isFavoriteIcon from '../images/blackHeartIcon.svg';
+import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function DrinkDetails() {
-  const [inProgress, setInProgress] = useState(false);
+  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
+
   const [doneRecipes] = useLocalStorage('favoriteRecipes', []);
 
   const [
@@ -30,10 +35,8 @@ export default function DrinkDetails() {
       await fetchRecomendations();
       await fetchDetailsRecipe(recipeId);
     };
-    setInProgress(pathname.includes('progress'));
     callApi();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []);
 
   const {
     strDrinkThumb: thumbnail,
@@ -128,48 +131,26 @@ export default function DrinkDetails() {
       <ul>
         {
           intoArray(detailedRecipe).map((el, i) => (
-            inProgress ? (
-              <label
-                key={ i }
-                data-testid={ `${i}-ingredient-step` }
-                htmlFor="test"
-                className={ classes.instruction }
-              >
-                {`${el[0]} --- ${el[1]}`}
-                <input
-                  type="checkbox"
-                  id="test"
-                  name="test"
-                />
-              </label>
-            )
-              : (
-                <li
-                  key={ i }
-                  data-testid={ `${i}-ingredient-name-and-measure` }
-                >
-                  {
-                    `${el[0]} --- ${el[1]}`
-                  }
-                </li>
-              )
+            <li
+              key={ i }
+              data-testid={ `${i}-ingredient-name-and-measure` }
+            >
+              {
+                `${el[0]} --- ${el[1]}`
+              }
+            </li>
           ))
         }
       </ul>
       <p data-testid="instructions">
         { instructions }
       </p>
-      { inProgress ? null : (
-        <RecomendationsCarousel />
-      ) }
-      <button
-        className="fixarBottun"
-        type="button"
-        data-testid={ inProgress ? 'finish-recipe-btn' : 'start-recipe-btn' }
-        onClick={ handleClick }
-      >
-        { inProgress ? 'Finish Recipe' : 'Start Recipe' }
-      </button>
+      <RecomendationsCarousel />
+      <StartRecipeButton
+        status={ startButtonStatus() }
+        recipeId={ id }
+        ingredients={ intoArray(detailedRecipe) }
+      />
     </div>
   );
 }
