@@ -12,17 +12,17 @@ export default function Drinks() {
   const {
     searchArray,
   } = useContext(SearchRecipesContext);
+
   const history = useHistory();
 
   const { drinkRecipeFetch,
     drinkRecipe, categoryDrink, drinkCategory } = useContext(FetchApiContext);
 
   const {
-    buttonDrinks,
-    setEndPointDrinks,
     toggle,
     setToggle,
-    setButtonDrinks } = useContext(FetchApiByCategoryContext);
+    buttonDrinks,
+    setEndPointDrinks, setButtonDrinks } = useContext(FetchApiByCategoryContext);
 
   useEffect(() => {
     drinkRecipeFetch();
@@ -32,7 +32,6 @@ export default function Drinks() {
 
   const handleClick = (event, filter) => {
     event.preventDefault();
-
     setEndPointDrinks(filter);
     setToggle(false);
   };

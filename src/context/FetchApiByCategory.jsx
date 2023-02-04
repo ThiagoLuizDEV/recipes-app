@@ -9,6 +9,7 @@ function FetchApiByCategory({ children }) {
   const [endPointMeals, setEndPointMeals] = useState('');
   const [buttonDrinks, setButtonDrinks] = useState([]);
   const [endPointDrinks, setEndPointDrinks] = useState('');
+
   const [toggle, setToggle] = useState(true);
 
   const fetchMeals = async () => {
