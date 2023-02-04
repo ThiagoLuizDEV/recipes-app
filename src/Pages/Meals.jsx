@@ -12,7 +12,6 @@ export default function Meals() {
   const {
     searchArray,
   } = useContext(SearchRecipesContext);
-  const history = useHistory();
 
   const { mealsRecipeFetch,
     mealsRecipe,
@@ -20,12 +19,13 @@ export default function Meals() {
     mealCategory,
   } = useContext(FetchApiContext);
 
+  const history = useHistory();
+
   const {
-    buttonMeals,
-    setEndPointMeals,
     toggle,
     setToggle,
-    setButtonMeals } = useContext(FetchApiByCategoryContext);
+    buttonMeals,
+    setEndPointMeals, setButtonMeals } = useContext(FetchApiByCategoryContext);
 
   useEffect(() => {
     mealsRecipeFetch();
@@ -34,7 +34,6 @@ export default function Meals() {
 
   const handleClick = (event, filter) => {
     event.preventDefault();
-
     setEndPointMeals(filter);
     setToggle(false);
   };
@@ -64,6 +63,10 @@ export default function Meals() {
     setToggle(true);
   };
 
+  const imageClick = (e) => {
+    history.push(`meals/${e.idMeal}`);
+  };
+
   const filterMealUnique = [];
 
   categoryMeal.forEach((cat, index) => {
@@ -71,8 +74,7 @@ export default function Meals() {
       return filterMealUnique.push(cat.strCategory);
     }
   });
-
-  console.log(searchArray);
+  
   const imageClick = (e) => {
     history.push(`meals/${e.idMeal}`);
   };

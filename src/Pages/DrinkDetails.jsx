@@ -1,19 +1,12 @@
-import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
 import classes from './styles/DrinkDetails.module.css';
-import StartRecipeButton from '../Components/StartRecipeButton';
-import shareIcon from '../images/shareIcon.svg';
-import isFavoriteIcon from '../images/blackHeartIcon.svg';
-import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
-import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function DrinkDetails() {
-  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
   const [inProgress, setInProgress] = useState(false);
-
   const [doneRecipes] = useLocalStorage('favoriteRecipes', []);
 
   const [
@@ -21,19 +14,15 @@ export default function DrinkDetails() {
   ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
 
   const [isCopied, setIsCopied] = useState(false);
-
+ 
   const {
     fetchDetailsRecipe,
     detailedRecipe,
     fetchRecomendations,
   } = useContext(SearchRecipesContext);
+  const history = useHistory();
 
   const { pathname } = useLocation();
-
-  const lastCharacter = -1;
-  const pageName = pathname.split('/')[1].slice(0, lastCharacter);
-  const localStorageKeyName = pathname.split('/')[1];
-
   const recipeId = pathname.split('/')[2];
 
   useEffect(() => {
@@ -47,11 +36,9 @@ export default function DrinkDetails() {
   }, [pathname]);
 
   const {
-    idDrink: id,
     strDrinkThumb: thumbnail,
-    strCategory: category,
     strDrink: title,
-    strAlcoholic: isAlcoholic,
+    strAlcoholic: category,
     strInstructions: instructions,
   } = detailedRecipe;
 
@@ -70,6 +57,11 @@ export default function DrinkDetails() {
 
     return resultArray;
   };
+
+  const handleClick = () => {
+    if (!inProgress) {
+      setInProgress(true);
+      history.push(`${pathname}/in-progress`);
 
   const handleShare = () => {
     const copy = require('clipboard-copy');
@@ -128,23 +120,10 @@ export default function DrinkDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
-      <input
-        type="image"
-        src={ shareIcon }
-        alt="share-btn"
-        data-testid="share-btn"
-        onClick={ handleShare }
-      />
-      { isCopied && <div>Link copied!</div> }
-      <input
-        type="image"
-        src={ !findInFavorites() ? isNotFavoriteIcon : isFavoriteIcon }
-        alt="favorite-btn"
-        data-testid="favorite-btn"
-        onClick={ handleFavorite }
-      />
+      <button data-testid="share-btn">Compartilhar</button>
+      <button data-testid="favorite-btn">Favoritar</button>
       <h2 data-testid="recipe-category">
-        { isAlcoholic }
+        { category }
       </h2>
       <ul>
         {
@@ -191,12 +170,6 @@ export default function DrinkDetails() {
       >
         { inProgress ? 'Finish Recipe' : 'Start Recipe' }
       </button>
-      <RecomendationsCarousel />
-      <StartRecipeButton
-        status={ startButtonStatus() }
-        recipeId={ id }
-        ingredients={ intoArray(detailedRecipe) }
-      />
     </div>
   );
 }
