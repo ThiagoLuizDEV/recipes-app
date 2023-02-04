@@ -27,6 +27,7 @@ export default function Drinks() {
   useEffect(() => {
     drinkRecipeFetch();
     drinkCategory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = (event, filter) => {
