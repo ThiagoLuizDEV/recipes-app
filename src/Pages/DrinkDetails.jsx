@@ -1,25 +1,14 @@
+import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import RecomendationsCarousel from '../Components/RecomendationsCarousel';
-import StartRecipeButton from '../Components/StartRecipeButton';
 import shareIcon from '../images/shareIcon.svg';
-import isFavoriteIcon from '../images/blackHeartIcon.svg';
-import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
-import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function DrinkDetails() {
-  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
-
-  const [doneRecipes] = useLocalStorage('favoriteRecipes', []);
-
-  const [
-    wipRecipes,
-  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
-
   const [isCopied, setIsCopied] = useState(false);
- 
+
   const {
     fetchDetailsRecipe,
     detailedRecipe,
@@ -62,54 +51,13 @@ export default function DrinkDetails() {
   };
 
   const handleClick = () => {
-    if (!inProgress) {
-      setInProgress(true);
-      history.push(`${pathname}/in-progress`);
+    history.push(`${pathname}/in-progress`);
+  };
 
   const handleShare = () => {
     const copy = require('clipboard-copy');
     copy(window.location.href);
     setIsCopied(true);
-  };
-
-  const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
-
-  // wip recipes é onjeto
-  const findInWip = () => id in wipRecipes[localStorageKeyName];
-
-  const findInDone = () => doneRecipes?.find((doneRecipe) => doneRecipe.id === id);
-
-  const startButtonStatus = () => {
-    if (findInWip()) {
-      return 'wip';
-    }
-    if (findInDone()) {
-      return 'done';
-    }
-    return 'start';
-  };
-
-  const handleFavorite = () => {
-    const duplicateFav = findInFavorites();
-
-    if (duplicateFav) {
-      const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
-
-      setFavRecipes(newFavRecipes);
-    } else {
-      setFavRecipes([
-        ...favRecipes,
-        {
-          id,
-          type: pageName,
-          nationality: '',
-          category,
-          alcoholicOrNot: isAlcoholic,
-          name: title,
-          image: thumbnail,
-        },
-      ]);
-    }
   };
 
   return (
@@ -123,8 +71,19 @@ export default function DrinkDetails() {
       <h1 data-testid="recipe-title">
         { title }
       </h1>
-      <button data-testid="share-btn">Compartilhar</button>
-      <button data-testid="favorite-btn">Favoritar</button>
+      <input
+        type="image"
+        src={ shareIcon }
+        alt="share-btn"
+        data-testid="share-btn"
+        onClick={ handleShare }
+      />
+      { isCopied && <div>Link copied!</div> }
+      <button
+        data-testid="favorite-btn"
+      >
+        Favoritar
+      </button>
       <h2 data-testid="recipe-category">
         { category }
       </h2>
@@ -135,9 +94,7 @@ export default function DrinkDetails() {
               key={ i }
               data-testid={ `${i}-ingredient-name-and-measure` }
             >
-              {
-                `${el[0]} --- ${el[1]}`
-              }
+              {`${el[0]} --- ${el[1]}`}
             </li>
           ))
         }
@@ -146,11 +103,14 @@ export default function DrinkDetails() {
         { instructions }
       </p>
       <RecomendationsCarousel />
-      <StartRecipeButton
-        status={ startButtonStatus() }
-        recipeId={ id }
-        ingredients={ intoArray(detailedRecipe) }
-      />
+      <button
+        className="fixarBottun"
+        type="button"
+        data-testid="start-recipe-btn"
+        onClick={ handleClick }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
