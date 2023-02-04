@@ -1,10 +1,14 @@
+// import { useContext } from 'react';
 import { arrayOf, string } from 'prop-types';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { useLocation } from 'react-router-dom';
+import { useLocation, withRouter } from 'react-router-dom';
+// import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import useLocalStorage from '../hooks/useLocalStorage';
 
-export default function StartRecipeButton({ status, ingredients }) {
+function StartRecipeButton({ status, ingredients }) {
   const history = useHistory();
+
+  // const { setId } = useContext(SearchRecipesContext);
 
   const { pathname } = useLocation();
   const siteKey = pathname.split('/')[1];
@@ -16,7 +20,8 @@ export default function StartRecipeButton({ status, ingredients }) {
   ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
 
   const handleStart = () => {
-    history.push(`${pathname}/in-progress`);
+    history.replace(`${pathname}/in-progress`);
+
     setWipRecipes({
       ...wipRecipes,
       [siteKey]: {
@@ -59,3 +64,5 @@ StartRecipeButton.propTypes = {
   status: string.isRequired,
   ingredients: arrayOf(arrayOf(string)).isRequired,
 };
+
+export default withRouter(StartRecipeButton);
