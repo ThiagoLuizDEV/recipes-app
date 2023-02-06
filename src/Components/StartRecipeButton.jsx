@@ -17,15 +17,16 @@ function StartRecipeButton({ status, ingredients }) {
   const [
     wipRecipes,
     setWipRecipes,
-  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
+  ] = useLocalStorage('inProgressRecipes');
 
   const handleStart = () => {
     history.replace(`${pathname}/in-progress`);
+    const ingredientsList = ingredients.map((el) => [`${el[0]} --- ${el[1]}`, false]);
 
     setWipRecipes({
       ...wipRecipes,
       [siteKey]: {
-        [recipeId]: ingredients,
+        [recipeId]: ingredientsList,
       },
     });
   };

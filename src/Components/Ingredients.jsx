@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import classes from '../Pages/styles/RecipeDetails.module.css';
+import classes from '../Pages/styles/RecipeInProgress.module.css';
 
 export default function Ingredients({ pathname, detailedRecipe, category, recipeId }) {
   const [checkedIngredients, setCheckedIngredients] = useState([]);

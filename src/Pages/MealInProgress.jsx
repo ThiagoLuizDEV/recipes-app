@@ -2,6 +2,7 @@ import require from 'clipboard-copy';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import YoutubeEmbed from '../Components/YoutubeEmbed';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import classes from './styles/RecipeInProgress.module.css';
 import shareIcon from '../images/shareIcon.svg';
@@ -9,28 +10,19 @@ import isFavoriteIcon from '../images/blackHeartIcon.svg';
 import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
 import useLocalStorage from '../hooks/useLocalStorage';
 
-function DrinkInProgress() {
+function MealInProgress() {
   const [checkedState, setCheckedState] = useState([]);
   const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes', []);
   const [doneRecipes, setDoneRecipes] = useLocalStorage('doneRecipes', []);
   const [isCopied, setIsCopied] = useState(false);
-  const {
-    fetchDetailsRecipe,
-    detailedRecipe,
-  } = useContext(SearchRecipesContext);
-
+  const { fetchDetailsRecipe, detailedRecipe } = useContext(SearchRecipesContext);
   const history = useHistory();
   const { pathname } = useLocation();
-
   const lastCharacter = -1;
   const pageName = pathname.split('/')[1];
   const nameForFav = pathname.split('/')[1].slice(0, lastCharacter);
   const recipeId = pathname.split('/')[2];
-
-  const [
-    wipRecipes,
-    setWipRecipes,
-  ] = useLocalStorage('inProgressRecipes');
+  const [wipRecipes, setWipRecipes] = useLocalStorage('inProgressRecipes');
 
   const intoArray = (recipe) => {
     const resultArray = [];
@@ -70,11 +62,12 @@ function DrinkInProgress() {
   }, [detailedRecipe]);
 
   const {
-    idDrink: id,
-    strDrinkThumb: thumbnail,
+    idMeal: id,
+    strArea: nationality,
+    strMealThumb: thumbnail,
     strCategory: category,
-    strDrink: title,
-    strAlcoholic: isAlcoholic,
+    strMeal: title,
+    strYoutube: youtubeLink,
     strInstructions: instructions,
     strTags: tags,
   } = detailedRecipe;
@@ -99,9 +92,9 @@ function DrinkInProgress() {
         {
           id,
           type: nameForFav,
-          nationality: '',
+          nationality,
           category,
-          alcoholicOrNot: isAlcoholic,
+          alcoholicOrNot: '',
           name: title,
           image: thumbnail,
         },
@@ -113,12 +106,12 @@ function DrinkInProgress() {
     setDoneRecipes(
       [...doneRecipes, {
         id,
-        nationality: '',
+        nationality,
         name: title,
         category,
         image: thumbnail,
-        tags: tags ?? [],
-        alcoholicOrNot: isAlcoholic,
+        tags: tags.split(',') ?? [],
+        alcoholicOrNot: '',
         type: nameForFav,
         doneDate: new Date().toISOString(),
       }],
@@ -204,9 +197,7 @@ function DrinkInProgress() {
         data-testid="favorite-btn"
         onClick={ handleFavorite }
       />
-      <h2 data-testid="recipe-category">
-        { category }
-      </h2>
+      <h2 data-testid="recipe-category">{ category }</h2>
       <ul>
         {
           intoArray(detailedRecipe).map((el, i) => (
@@ -231,9 +222,8 @@ function DrinkInProgress() {
           ))
         }
       </ul>
-      <p data-testid="instructions">
-        { instructions }
-      </p>
+      <p data-testid="instructions">{ instructions }</p>
+      <YoutubeEmbed youtubeLink={ youtubeLink } />
       <button
         className="fixarBottun"
         type="button"
@@ -247,4 +237,4 @@ function DrinkInProgress() {
   );
 }
 
-export default withRouter(DrinkInProgress);
+export default withRouter(MealInProgress);

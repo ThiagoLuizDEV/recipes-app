@@ -22,6 +22,10 @@ export default function Meals() {
   const history = useHistory();
 
   const {
+    setId,
+  } = useContext(SearchRecipesContext);
+
+  const {
     toggle,
     setToggle,
     buttonMeals,
@@ -65,6 +69,7 @@ export default function Meals() {
 
   const imageClick = (e) => {
     history.push(`meals/${e.idMeal}`);
+    setId(e.idMeal);
   };
 
   const filterMealUnique = [];
