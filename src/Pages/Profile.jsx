@@ -13,17 +13,6 @@ export default function Profile() {
   };
 
   const email = localStorage.getItem('user');
-  console.log(email);
-  // const history = useHistory();
-  // const { login } = useContext(LoginContext);
-  // const emails = login.email;
-  // console.log(emails);
-  // const test = 'email@mail.com';
-  // for (let i = 0; i < localStorage.length; i += 1) {
-  //   const key = localStorage.key(i);
-  //   const value = localStorage.getItem(key);
-  //   console.log(key, value);
-  // }
   return (
     <div>
       <Header />

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
@@ -18,7 +19,11 @@ export default function Meals() {
     mealCategory,
   } = useContext(FetchApiContext);
 
+  const history = useHistory();
+
   const {
+    toggle,
+    setToggle,
     buttonMeals,
     setEndPointMeals, setButtonMeals } = useContext(FetchApiByCategoryContext);
 
@@ -27,8 +32,10 @@ export default function Meals() {
     mealCategory();
   }, []);
 
-  const handleClick = (filter) => {
+  const handleClick = (event, filter) => {
+    event.preventDefault();
     setEndPointMeals(filter);
+    setToggle(false);
   };
 
   const numberValid = 11;
@@ -50,13 +57,14 @@ export default function Meals() {
     });
   }
 
-  const handleInitialPage = () => {
-    // drinkRecipe.forEach((recips, i) => {
-    //   if (i <= numberValid) {
-    //     return arrayDrink.push(recips);
-    //   }
-    // });
+  const handleInitialPage = (event) => {
+    event.preventDefault();
     setButtonMeals([]);
+    setToggle(true);
+  };
+
+  const imageClick = (e) => {
+    history.push(`meals/${e.idMeal}`);
   };
 
   const filterMealUnique = [];
@@ -66,7 +74,6 @@ export default function Meals() {
       return filterMealUnique.push(cat.strCategory);
     }
   });
-
   const maxNumberOfRecipes = 12;
   const render = (recipes) => (
     recipes.slice(0, maxNumberOfRecipes).map((recips, index) => (
@@ -80,12 +87,14 @@ export default function Meals() {
         >
           {recips.strMeal}
         </p>
-        <img
+        <input
+          type="image"
           width="150px"
           height="150px"
           src={ recips.strMealThumb }
           alt={ recips.idMeal }
           data-testid={ `${index}-card-img` }
+          onClick={ () => imageClick(recips) }
         />
       </div>
     ))
@@ -100,7 +109,8 @@ export default function Meals() {
             key={ filter }
             value={ filter }
             data-testid={ `${filter}-category-filter` }
-            onClick={ () => handleClick(filter) }
+            onClick={ toggle ? (e) => handleClick(e, filter)
+              : (e) => handleInitialPage(e) }
           >
             {filter}
           </button>

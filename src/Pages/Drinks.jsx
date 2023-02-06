@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
@@ -12,20 +13,27 @@ export default function Drinks() {
     searchArray,
   } = useContext(SearchRecipesContext);
 
+  const history = useHistory();
+
   const { drinkRecipeFetch,
     drinkRecipe, categoryDrink, drinkCategory } = useContext(FetchApiContext);
 
   const {
+    toggle,
+    setToggle,
     buttonDrinks,
     setEndPointDrinks, setButtonDrinks } = useContext(FetchApiByCategoryContext);
 
   useEffect(() => {
     drinkRecipeFetch();
     drinkCategory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClick = (filter) => {
+  const handleClick = (event, filter) => {
+    event.preventDefault();
     setEndPointDrinks(filter);
+    setToggle(false);
   };
 
   const numberValid = 11;
@@ -47,9 +55,10 @@ export default function Drinks() {
     });
   }
 
-  const handleInitialPage = () => {
+  const handleInitialPage = (event) => {
+    event.preventDefault();
     setButtonDrinks([]);
-    console.log(buttonDrinks);
+    setToggle(true);
   };
 
   const filterDrinkUnique = [];
@@ -59,6 +68,10 @@ export default function Drinks() {
     }
     return true;
   });
+
+  const imageClick = (e) => {
+    history.push(`drinks/${e.idDrink}`);
+  };
 
   const maxNumberOfDrinks = 12;
   const render = (drinks) => (
@@ -73,12 +86,14 @@ export default function Drinks() {
         >
           {recips.strDrink}
         </p>
-        <img
+        <input
+          type="image"
           width="150px"
           height="150px"
           src={ recips.strDrinkThumb }
           alt={ recips.idDrink }
           data-testid={ `${index}-card-img` }
+          onClick={ () => imageClick(recips) }
         />
       </div>
     ))
@@ -94,7 +109,8 @@ export default function Drinks() {
             type="submit"
             value={ filter }
             data-testid={ `${filter}-category-filter` }
-            onClick={ () => handleClick(filter) }
+            onClick={ toggle ? (e) => handleClick(e, filter)
+              : (e) => handleInitialPage(e) }
           >
             { filter }
           </button>
