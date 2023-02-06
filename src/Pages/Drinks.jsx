@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { FetchApiByCategoryContext } from '../context/FetchApiByCategory';
@@ -8,7 +8,7 @@ import { FetchApiContext } from '../context/FetchsApi';
 import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import './styles/Recipes.css';
 
-export default function Drinks() {
+function Drinks() {
   const {
     searchArray,
   } = useContext(SearchRecipesContext);
@@ -23,6 +23,10 @@ export default function Drinks() {
     setToggle,
     buttonDrinks,
     setEndPointDrinks, setButtonDrinks } = useContext(FetchApiByCategoryContext);
+
+  const {
+    setId,
+  } = useContext(SearchRecipesContext);
 
   useEffect(() => {
     drinkRecipeFetch();
@@ -71,6 +75,7 @@ export default function Drinks() {
 
   const imageClick = (e) => {
     history.push(`drinks/${e.idDrink}`);
+    setId(e.idDrink);
   };
 
   const maxNumberOfDrinks = 12;
@@ -137,3 +142,5 @@ export default function Drinks() {
     </div>
   );
 }
+
+export default withRouter(Drinks);

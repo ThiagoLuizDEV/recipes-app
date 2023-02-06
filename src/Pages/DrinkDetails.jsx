@@ -16,7 +16,7 @@ export default function DrinkDetails() {
 
   const [
     wipRecipes,
-  ] = useLocalStorage('inProgressRecipes');
+  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
 
   const [isCopied, setIsCopied] = useState(false);
 
@@ -76,7 +76,7 @@ export default function DrinkDetails() {
   const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
 
   // wip recipes é onjeto
-  const findInWip = () => id in wipRecipes[localStorageKeyName];
+  const findInWip = () => !wipRecipes && id in wipRecipes[localStorageKeyName];
 
   const findInDone = () => doneRecipes?.find((doneRecipe) => doneRecipe.id === id);
 
