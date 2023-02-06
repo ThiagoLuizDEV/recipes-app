@@ -7,7 +7,6 @@ import FetchsApi from '../context/FetchsApi';
 import FetchApiByCategory from '../context/FetchApiByCategory';
 import App from '../App';
 
-
 const SEARCH_TOP_BTN = 'search-top-btn';
 const SEARCH_INPUT = 'search-input';
 const EXEC_SEARCH_BTN = 'exec-search-btn';
