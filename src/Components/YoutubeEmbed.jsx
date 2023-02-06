@@ -3,13 +3,18 @@ import { string } from 'prop-types';
 const ALLOW_PART_1 = 'accelerometer; autoplay; clipboard-write;';
 const ALLOW_PART_2 = 'encrypted-media; gyroscope; picture-in-picture';
 
-export default function YoutubeEmbed({ embedId }) {
+export default function YoutubeEmbed({ youtubeLink }) {
+  const link = youtubeLink ? youtubeLink.replace('watch', 'embed') : '#';
+
   return (
-    <div className="video-responsive">
+    <div
+      className="video-responsive"
+      data-testid="video"
+    >
       <iframe
         width="853"
         height="480"
-        src={ `https://www.youtube.com/embed/${embedId}` }
+        src={ link }
         frameBorder="0"
         allow={ `${ALLOW_PART_1} ${ALLOW_PART_2}` }
         allowFullScreen
@@ -19,6 +24,10 @@ export default function YoutubeEmbed({ embedId }) {
   );
 }
 
+YoutubeEmbed.defaultProps = {
+  youtubeLink: '#',
+};
+
 YoutubeEmbed.propTypes = {
-  embedId: string.isRequired,
+  youtubeLink: string,
 };

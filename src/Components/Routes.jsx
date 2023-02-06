@@ -4,7 +4,7 @@ import Login from '../Pages/Login';
 import Profile from '../Pages/Profile';
 import Meals from '../Pages/Meals';
 import Drink from '../Pages/Drinks';
-import Donerecipes from '../Pages/Done-recipes';
+import Donerecipes from './Done-recipes';
 import Favoritesrecipes from '../Pages/Favorites-recipes';
 import DrinkDetails from '../Pages/DrinkDetails';
 import MealDetails from '../Pages/MealDetails';
