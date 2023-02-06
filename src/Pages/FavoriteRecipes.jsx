@@ -1,11 +1,19 @@
 import require from 'clipboard-copy';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import { SearchRecipesContext } from '../context/SearchRecipesProvider';
 import Header from '../Components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import isFavoriteIcon from '../images/blackHeartIcon.svg';
 import useLocalStorage from '../hooks/useLocalStorage';
 
-export default function Favoritesrecipes() {
+function Favoritesrecipes() {
+  const {
+    setId,
+  } = useContext(SearchRecipesContext);
+
+  const history = useHistory();
+
   const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes');
 
   const [isCopied, setIsCopied] = useState(false);
@@ -62,6 +70,11 @@ export default function Favoritesrecipes() {
     setFilter(value);
   };
 
+  const handleClickOnRecipe = (recipe) => {
+    setId(recipe.id);
+    history.push(`/${recipe.type}s/${recipe.id}`);
+  };
+
   return (
     <div>
       <Header />
@@ -92,22 +105,29 @@ export default function Favoritesrecipes() {
       {
         recipesToRender()?.map((recipe, i) => (
           <div key={ recipe.id }>
-            <img
-              src={ recipe.image }
-              alt={ recipe.name }
-              data-testid={ `${i}-horizontal-image` }
-              style={ { width: 300 } }
-            />
-            <h1
-              data-testid={ `${i}-horizontal-name` }
-            >
-              { recipe.name }
-            </h1>
-            <h2
-              data-testid={ `${i}-horizontal-top-text` }
-            >
-              { mealOrDrink(recipe) }
-            </h2>
+            <label htmlFor={ recipe.id }>
+              <input
+                type="image"
+                id={ recipe.id }
+                src={ recipe.image }
+                alt={ recipe.name }
+                data-testid={ `${i}-horizontal-image` }
+                style={ { width: 300 } }
+                onClick={ () => handleClickOnRecipe(recipe) }
+              />
+              <h1
+                id={ recipe.id }
+                data-testid={ `${i}-horizontal-name` }
+              >
+                { recipe.name }
+              </h1>
+              <h2
+                id={ recipe.id }
+                data-testid={ `${i}-horizontal-top-text` }
+              >
+                { mealOrDrink(recipe) }
+              </h2>
+            </label>
             <input
               type="image"
               src={ shareIcon }
@@ -131,3 +151,5 @@ export default function Favoritesrecipes() {
     </div>
   );
 }
+
+export default withRouter(Favoritesrecipes);
