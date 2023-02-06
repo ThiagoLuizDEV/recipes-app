@@ -16,7 +16,7 @@ export default function DrinkDetails() {
 
   const [
     wipRecipes,
-  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
+  ] = useLocalStorage('inProgressRecipes');
 
   const [isCopied, setIsCopied] = useState(false);
 
