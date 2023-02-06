@@ -21,11 +21,12 @@ function StartRecipeButton({ status, ingredients }) {
 
   const handleStart = () => {
     history.replace(`${pathname}/in-progress`);
+    const ingredientsList = ingredients.map((el) => [`${el[0]} --- ${el[1]}`, false]);
 
     setWipRecipes({
       ...wipRecipes,
       [siteKey]: {
-        [recipeId]: ingredients,
+        [recipeId]: ingredientsList,
       },
     });
   };
