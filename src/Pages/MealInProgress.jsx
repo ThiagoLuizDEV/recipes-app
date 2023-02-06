@@ -110,7 +110,7 @@ function MealInProgress() {
         name: title,
         category,
         image: thumbnail,
-        tags: tags.split(',') ?? [],
+        tags: tags?.split(',') ?? [],
         alcoholicOrNot: '',
         type: nameForFav,
         doneDate: new Date().toISOString(),
