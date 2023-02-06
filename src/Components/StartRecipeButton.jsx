@@ -17,7 +17,7 @@ function StartRecipeButton({ status, ingredients }) {
   const [
     wipRecipes,
     setWipRecipes,
-  ] = useLocalStorage('inProgressRecipes', { drinks: {}, meals: {} });
+  ] = useLocalStorage('inProgressRecipes');
 
   const handleStart = () => {
     history.replace(`${pathname}/in-progress`);

@@ -76,7 +76,11 @@ export default function DrinkDetails() {
   const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
 
   // wip recipes é onjeto
-  const findInWip = () => !wipRecipes && id in wipRecipes[localStorageKeyName];
+  const findInWip = () => {
+    if (wipRecipes) {
+      return recipeId in wipRecipes[localStorageKeyName];
+    }
+  };
 
   const findInDone = () => doneRecipes?.find((doneRecipe) => doneRecipe.id === id);
 
