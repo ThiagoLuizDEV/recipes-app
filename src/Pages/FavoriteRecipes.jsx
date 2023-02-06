@@ -10,6 +10,8 @@ export default function Favoritesrecipes() {
 
   const [isCopied, setIsCopied] = useState(false);
 
+  const [filter, setFilter] = useState('all');
+
   const findInFavorites = (id) => favRecipes.find((favRecipe) => favRecipe.id === id);
 
   const handleShare = ({ target }) => {
@@ -35,29 +37,60 @@ export default function Favoritesrecipes() {
     }
   };
 
+  const mealOrDrink = (recipe) => {
+    if (recipe.type === 'meal') {
+      return `${recipe.nationality} - ${recipe.category}`;
+    }
+    return `${recipe.alcoholicOrNot} - ${recipe.category}`;
+  };
+
+  const recipesToRender = () => {
+    switch (filter) {
+    case 'meal':
+      return favRecipes?.filter((recipe) => recipe.type === 'meal');
+    case 'drink':
+      return favRecipes?.filter((recipe) => recipe.type === 'drink');
+    default:
+      return favRecipes;
+    }
+  };
+
+  const handleFilter = (e) => {
+    e.preventDefault();
+    const { value } = e.target;
+
+    setFilter(value);
+  };
+
   return (
     <div>
       <Header />
       <button
         type="button"
         data-testid="filter-by-all-btn"
+        value="all"
+        onClick={ (e) => handleFilter(e) }
       >
         All
       </button>
       <button
         type="button"
         data-testid="filter-by-meal-btn"
+        value="meal"
+        onClick={ (e) => handleFilter(e) }
       >
         Meals
       </button>
       <button
         type="button"
         data-testid="filter-by-drink-btn"
+        value="drink"
+        onClick={ (e) => handleFilter(e) }
       >
         Drinks
       </button>
       {
-        favRecipes?.map((recipe, i) => (
+        recipesToRender()?.map((recipe, i) => (
           <div key={ recipe.id }>
             <img
               src={ recipe.image }
@@ -73,7 +106,7 @@ export default function Favoritesrecipes() {
             <h2
               data-testid={ `${i}-horizontal-top-text` }
             >
-              { `${recipe.nationality} - ${recipe.category}` }
+              { mealOrDrink(recipe) }
             </h2>
             <input
               type="image"
