@@ -7,6 +7,10 @@ import FetchsApi from '../context/FetchsApi';
 import FetchApiByCategory from '../context/FetchApiByCategory';
 import App from '../App';
 
+const searchBtnString = 'search-top-btn';
+const searchInputString = 'search-input';
+const searchSubmitString = 'exec-search-btn';
+
 describe('Testando do componente SearchBar', () => {
   beforeEach(() => {
     jest.spyOn(global, 'alert');
@@ -36,12 +40,12 @@ describe('Testando do componente SearchBar', () => {
     userEvent.type((password), '1234567');
     userEvent.click(btnLogin);
     const titlePage = screen.getByText('Meals');
-    const searchBtn = screen.getByTestId('search-top-btn');
+    const searchBtn = screen.getByTestId(searchBtnString);
     expect(titlePage).toBeInTheDocument();
     userEvent.click(searchBtn);
-    const searchInput = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(searchInputString);
     userEvent.type((searchInput), 'beef');
-    const searchSubmit = screen.getByTestId('exec-search-btn');
+    const searchSubmit = screen.getByTestId(searchSubmitString);
     userEvent.click(searchSubmit);
   });
 
@@ -59,15 +63,15 @@ describe('Testando do componente SearchBar', () => {
     );
 
     const titlePage = screen.getByText('Meals');
-    const searchBtn = screen.getByTestId('search-top-btn');
+    const searchBtn = screen.getByTestId(searchBtnString);
     expect(titlePage).toBeInTheDocument();
     userEvent.click(searchBtn);
     const inputRadioFirstLetter = screen.getByTestId('first-letter-search-radio');
     userEvent.click(inputRadioFirstLetter);
     expect(inputRadioFirstLetter).toBeChecked();
-    const searchInput = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(searchInputString);
     userEvent.type((searchInput), 'b');
-    const searchSubmit = screen.getByTestId('exec-search-btn');
+    const searchSubmit = screen.getByTestId(searchSubmitString);
     userEvent.click(searchSubmit);
 
     const inputRadioName = screen.getByTestId('name-search-radio');
@@ -98,15 +102,15 @@ describe('Testando do componente SearchBar', () => {
       </BrowserRouter>,
     );
     const titlePage = screen.getByText('Meals');
-    const searchBtn = screen.getByTestId('search-top-btn');
+    const searchBtn = screen.getByTestId(searchBtnString);
     expect(titlePage).toBeInTheDocument();
 
     userEvent.click(searchBtn);
     const inputRadioFirstLetter = screen.getByTestId('first-letter-search-radio');
     userEvent.click(inputRadioFirstLetter);
-    const searchInput = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(searchInputString);
     userEvent.type((searchInput), 'ba');
-    const searchSubmit = screen.getByTestId('exec-search-btn');
+    const searchSubmit = screen.getByTestId(searchSubmitString);
     userEvent.click(searchSubmit);
 
     await waitFor(() => {
@@ -129,15 +133,15 @@ describe('Testando do componente SearchBar', () => {
       </BrowserRouter>,
     );
     const titlePage = screen.getByText('Meals');
-    const searchBtn = screen.getByTestId('search-top-btn');
+    const searchBtn = screen.getByTestId(searchBtnString);
     expect(titlePage).toBeInTheDocument();
 
     userEvent.click(searchBtn);
     const inputRadioName = screen.getByTestId('name-search-radio');
     userEvent.click(inputRadioName);
-    const searchInput = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(searchInputString);
     userEvent.type((searchInput), 'corba');
-    const searchSubmit = screen.getByTestId('exec-search-btn');
+    const searchSubmit = screen.getByTestId(searchSubmitString);
     userEvent.click(searchSubmit);
     await waitFor(() => {
       const mealDetails = screen.getByText('meal details');

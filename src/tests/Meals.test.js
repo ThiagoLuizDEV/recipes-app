@@ -21,7 +21,6 @@ describe('Testando a page Recipes', () => {
       </BrowserRouter>,
     );
 
-    // expect(asFragment()).toMatchSnapshot();
     const email = screen.getByTestId('email-input');
     expect(email).toBeInTheDocument();
     const password = screen.getByTestId('password-input');
