@@ -3,42 +3,35 @@ import { useState } from 'react';
 import Header from '../Components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import isFavoriteIcon from '../images/blackHeartIcon.svg';
-import isNotFavoriteIcon from '../images/whiteHeartIcon.svg';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function Favoritesrecipes() {
-  const [favRecipes] = useLocalStorage('favoriteRecipes');
+  const [favRecipes, setFavRecipes] = useLocalStorage('favoriteRecipes');
 
   const [isCopied, setIsCopied] = useState(false);
 
-  const findInFavorites = () => favRecipes.find((favRecipe) => favRecipe.id === id);
+  const findInFavorites = (id) => favRecipes.find((favRecipe) => favRecipe.id === id);
 
-  const handleShare = () => {
+  const handleShare = ({ target }) => {
     const copy = require('clipboard-copy');
-    copy(window.location.href);
+    const link = window.location.href;
+    const stringSlice = 16;
+    const cleanLink = link.substring(0, link.length - stringSlice);
+    const correctLink = `${cleanLink}${target.value}`;
+    copy(correctLink);
     setIsCopied(true);
   };
 
-  const handleFavorite = () => {
-    const duplicateFav = findInFavorites();
+  const handleFavorite = (e) => {
+    e.preventDefault();
+
+    const id = e.target.value;
+    const duplicateFav = findInFavorites(id);
 
     if (duplicateFav) {
       const newFavRecipes = favRecipes.filter((favRecipe) => favRecipe.id !== id);
 
       setFavRecipes(newFavRecipes);
-    } else {
-      setFavRecipes([
-        ...favRecipes,
-        {
-          id,
-          type: pageName,
-          nationality,
-          category,
-          alcoholicOrNot: '',
-          name: title,
-          image: thumbnail,
-        },
-      ]);
     }
   };
 
@@ -64,39 +57,42 @@ export default function Favoritesrecipes() {
         Drinks
       </button>
       {
-        favRecipes.map((recipe, i) => (
-          <>
+        favRecipes?.map((recipe, i) => (
+          <div key={ recipe.id }>
             <img
-              src="#"
-              alt="#"
+              src={ recipe.image }
+              alt={ recipe.name }
               data-testid={ `${i}-horizontal-image` }
+              style={ { width: 300 } }
             />
-            <p
-              data-testid={ `${i}-horizontal-top-text"` }
+            <h1
+              data-testid={ `${i}-horizontal-name` }
             >
-              Texto
-            </p>
-            <p
-              data-testid={ `${i}-horizontal-top-name"` }
+              { recipe.name }
+            </h1>
+            <h2
+              data-testid={ `${i}-horizontal-top-text` }
             >
-              Name
-            </p>
+              { `${recipe.nationality} - ${recipe.category}` }
+            </h2>
             <input
               type="image"
               src={ shareIcon }
               alt="share-btn"
               data-testid={ `${i}-horizontal-share-btn` }
-              onClick={ handleShare }
+              value={ `${recipe.type}s/${recipe.id}` }
+              onClick={ (e) => handleShare(e) }
             />
             { isCopied && <div>Link copied!</div> }
             <input
               type="image"
-              src={ !findInFavorites() ? isNotFavoriteIcon : isFavoriteIcon }
+              src={ isFavoriteIcon }
               alt="favorite-btn"
               data-testid={ `${i}-horizontal-favorite-btn` }
-              onClick={ handleFavorite }
+              value={ recipe.id }
+              onClick={ (e) => handleFavorite(e) }
             />
-          </>
+          </div>
         ))
       }
     </div>
